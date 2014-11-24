@@ -57,6 +57,19 @@ function parse(sdf, options) {
         }
     }
 
+    // all numeric fields should be converted to numbers
+    var numericFields=[];
+    for (var label in labels) {
+
+        if (labels[label].isNumeric) {
+            for (var j=0; j < molecules.length; j++) {
+                if (molecules[j][label]) {
+                    molecules[j][label]=parseFloat(molecules[j][label]);
+                }
+            }
+        }
+    }
+
     var statistics = [];
 
     for (var key in labels) {

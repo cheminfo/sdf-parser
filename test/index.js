@@ -25,6 +25,13 @@ describe('SDF Parser', function () {
         result.statistics[1].label.should.be.equal('Number of H-Donors');
     });
 
+    console.log(result.molecules[0]);
 
+    it('Check molecules', function () {
+        var molecule=result.molecules[0];
+        molecule.Code.should.be.a.String;
+        molecule.CLogP.should.be.a.Number;
+        molecule.CLogP.should.be.equal(2.7);
+    });
 
 });
