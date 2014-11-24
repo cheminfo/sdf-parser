@@ -8,15 +8,23 @@ describe('SDF Parser', function () {
 
     var result = parse(sdf);
 
-    it('should return an object', function () {
+    console.log(result.statistics);
+
+    it('Check result', function () {
         result.should.be.an.Object;
-        result.should.have.properties('labels', 'molecules');
+        result.should.have.properties('labels', 'molecules', 'statistics');
     });
 
-    it.skip('numeric fields', function () {
-
-
-
+    it('Check statistics', function () {
+        result.statistics[0].should.have.properties('counter', 'isNumeric', 'label');
+        result.statistics[0].counter.should.be.equal(128);
+        result.statistics[0].isNumeric.should.be.equal(false);
+        result.statistics[0].label.should.be.equal('Code');
+        result.statistics[1].counter.should.be.equal(128);
+        result.statistics[1].isNumeric.should.be.equal(true);
+        result.statistics[1].label.should.be.equal('Number of H-Donors');
     });
+
+
 
 });
