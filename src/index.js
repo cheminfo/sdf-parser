@@ -25,7 +25,7 @@ function parse(sdf, options) {
     for (; i < ii; i++) {
         sdfPart = sdfParts[i];
         parts = sdfPart.split(crlf + '>');
-        if (parts.length > 0 && parts[0].length > 10) {
+        if (parts.length > 0 && parts[0].length > 5) {
             molecule = {};
             molecules.push(molecule);
             molecule.molfile = {type: 'mol2d', value: parts[0] + crlf};
@@ -75,8 +75,16 @@ function parse(sdf, options) {
         }
     }
 
-    var statistics = [];
+    // we check that a label is in all the records
+    for (var key in labels) {
+        if (labels[key].counter==molecules.length) {
+            labels[key].always=true;
+        } else {
+            labels[key].always=false;
+        }
+    }
 
+    var statistics = [];
     for (var key in labels) {
         var statistic=labels[key];
         statistic.label=key;

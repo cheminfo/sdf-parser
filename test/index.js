@@ -24,6 +24,8 @@ describe('SDF Parser', function () {
         result.statistics[1].maxValue.should.be.equal(5);
         result.statistics[1].isNumeric.should.be.equal(true);
         result.statistics[1].label.should.be.equal('Number of H-Donors');
+        result.statistics[0].always.should.be.equal(true);
+        result.statistics[4].always.should.be.equal(false);
     });
 
     it('Check molecules', function () {
