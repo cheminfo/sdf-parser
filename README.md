@@ -12,5 +12,5 @@ npm test
 To build the project:
 
 ```bash
-npm run-script build
+npm run build
 ```
