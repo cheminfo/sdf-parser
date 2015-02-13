@@ -34,4 +34,16 @@ describe('SDF Parser', function () {
         molecule.CLogP.should.be.equal(2.7);
     });
 
+    it('should throw with non-string argument', function () {
+        (function () {
+            parse();
+        }).should.throw(TypeError);
+        (function () {
+            parse(42);
+        }).should.throw(TypeError);
+        (function () {
+            parse({});
+        }).should.throw(TypeError);
+    })
+
 });

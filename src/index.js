@@ -1,8 +1,9 @@
 'use strict';
 
-// options: an object
-
-function parse(sdf, options) {
+function parse(sdf) {
+    if (typeof sdf !== 'string') {
+        throw new TypeError('Parameter "sdf" must be a string');
+    }
     // we will find the delimiter in order to be much faster and not use regular expression
     var header = sdf.substr(0, 1000);
     var crlf = '\n';
@@ -57,18 +58,18 @@ function parse(sdf, options) {
     }
 
     // all numeric fields should be converted to numbers
-    var numericFields=[];
+    var numericFields = [];
     for (var label in labels) {
-        var currentLabel=labels[label];
+        var currentLabel = labels[label];
         if (currentLabel.isNumeric) {
-            currentLabel.minValue=Number.MAX_VALUE;
-            currentLabel.maxValue=Number.MIN_VALUE;
-            for (var j=0; j < molecules.length; j++) {
+            currentLabel.minValue = Infinity;
+            currentLabel.maxValue = -Infinity;
+            for (var j = 0; j < molecules.length; j++) {
                 if (molecules[j][label]) {
-                    var value=parseFloat(molecules[j][label]);
-                    molecules[j][label]=value;
-                    if (value>currentLabel.maxValue) currentLabel.maxValue=value;
-                    if (value<currentLabel.minValue) currentLabel.minValue=value;
+                    var value = parseFloat(molecules[j][label]);
+                    molecules[j][label] = value;
+                    if (value > currentLabel.maxValue) currentLabel.maxValue = value;
+                    if (value < currentLabel.minValue) currentLabel.minValue = value;
                 }
             }
         }
@@ -76,17 +77,17 @@ function parse(sdf, options) {
 
     // we check that a label is in all the records
     for (var key in labels) {
-        if (labels[key].counter==molecules.length) {
-            labels[key].always=true;
+        if (labels[key].counter === molecules.length) {
+            labels[key].always = true;
         } else {
-            labels[key].always=false;
+            labels[key].always = false;
         }
     }
 
     var statistics = [];
     for (var key in labels) {
-        var statistic=labels[key];
-        statistic.label=key;
+        var statistic = labels[key];
+        statistic.label = key;
         statistics.push(statistic);
     }
 
