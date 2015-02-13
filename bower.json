@@ -2,8 +2,8 @@
   "name": "sdf-parser",
   "version": "1.0.0",
   "main": [
-    "dist/sdfparser.js",
-    "dist/sdfparser.min.js"
+    "dist/sdf-parser.js",
+    "dist/sdf-parser.min.js"
   ],
   "homepage": "https://github.com/cheminfo/sdf-parser",
   "authors": [
