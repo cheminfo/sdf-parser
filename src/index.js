@@ -1,6 +1,5 @@
 'use strict';
 
-
 // options: an object
 
 function parse(sdf, options) {
@@ -101,4 +100,3 @@ function parse(sdf, options) {
 }
 
 module.exports = parse;
-

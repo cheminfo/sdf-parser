@@ -1,4 +1,4 @@
-var parse = require('../');
+var parse = require('..');
 
 var fs = require('fs');
 
@@ -14,7 +14,6 @@ describe('SDF Parser', function () {
     });
 
     it('Check statistics', function () {
-        console.log(result.statistics);
         result.statistics[0].should.have.properties('counter', 'isNumeric', 'label');
         result.statistics[0].counter.should.be.equal(128);
         result.statistics[0].isNumeric.should.be.equal(false);
