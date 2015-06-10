@@ -1,15 +1,16 @@
 /**
  * sdf-parser - SDF parser
- * @version v1.0.0
+ * @version v1.0.1
  * @link https://github.com/cheminfo/sdf-parser
  * @license MIT
  */
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.SDFParser=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-// options: an object
-
-function parse(sdf, options) {
+function parse(sdf) {
+    if (typeof sdf !== 'string') {
+        throw new TypeError('Parameter "sdf" must be a string');
+    }
     // we will find the delimiter in order to be much faster and not use regular expression
     var header = sdf.substr(0, 1000);
     var crlf = '\n';
@@ -64,18 +65,18 @@ function parse(sdf, options) {
     }
 
     // all numeric fields should be converted to numbers
-    var numericFields=[];
+    var numericFields = [];
     for (var label in labels) {
-        var currentLabel=labels[label];
+        var currentLabel = labels[label];
         if (currentLabel.isNumeric) {
-            currentLabel.minValue=Number.MAX_VALUE;
-            currentLabel.maxValue=Number.MIN_VALUE;
-            for (var j=0; j < molecules.length; j++) {
+            currentLabel.minValue = Infinity;
+            currentLabel.maxValue = -Infinity;
+            for (var j = 0; j < molecules.length; j++) {
                 if (molecules[j][label]) {
-                    var value=parseFloat(molecules[j][label]);
-                    molecules[j][label]=value;
-                    if (value>currentLabel.maxValue) currentLabel.maxValue=value;
-                    if (value<currentLabel.minValue) currentLabel.minValue=value;
+                    var value = parseFloat(molecules[j][label]);
+                    molecules[j][label] = value;
+                    if (value > currentLabel.maxValue) currentLabel.maxValue = value;
+                    if (value < currentLabel.minValue) currentLabel.minValue = value;
                 }
             }
         }
@@ -83,17 +84,17 @@ function parse(sdf, options) {
 
     // we check that a label is in all the records
     for (var key in labels) {
-        if (labels[key].counter==molecules.length) {
-            labels[key].always=true;
+        if (labels[key].counter === molecules.length) {
+            labels[key].always = true;
         } else {
-            labels[key].always=false;
+            labels[key].always = false;
         }
     }
 
     var statistics = [];
     for (var key in labels) {
-        var statistic=labels[key];
-        statistic.label=key;
+        var statistic = labels[key];
+        statistic.label = key;
         statistics.push(statistic);
     }
 
