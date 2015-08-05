@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cheminfo/sdf-parser.git"
+    "url": "https://github.com/cheminfo-js/sdf-parser.git"
   },
   "keywords": [
     "sdf",
@@ -25,9 +25,9 @@
   "author": "Luc Patiny",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cheminfo/sdf-parser/issues"
+    "url": "https://github.com/cheminfo-js/sdf-parser/issues"
   },
-  "homepage": "https://github.com/cheminfo/sdf-parser",
+  "homepage": "https://github.com/cheminfo-js/sdf-parser",
   "devDependencies": {
     "cheminfo-tools": "^1.0.2",
     "mocha": "^2.2.5",

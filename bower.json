@@ -5,7 +5,7 @@
     "dist/sdf-parser.js",
     "dist/sdf-parser.min.js"
   ],
-  "homepage": "https://github.com/cheminfo/sdf-parser",
+  "homepage": "https://github.com/cheminfo-js/sdf-parser",
   "authors": [
     "Michaël Zasso"
   ],
