@@ -84,7 +84,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (parts.length > 0 && parts[0].length > 5) {
 	            molecule = {};
 	            molecules.push(molecule);
-	            molecule.molfile = {type: 'mol2d', value: parts[0] + crlf};
+	            molecule.molfile = parts[0] + crlf;
 	            jj = parts.length;
 	            for (j = 1; j < jj; j++) {
 	                lines = parts[j].split(crlf);
