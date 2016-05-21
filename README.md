@@ -7,6 +7,28 @@
 
 Allow to parse a SDF file and convert it to an array of objects
 
+## Use of the pacakge
+
+```bash
+npm install sdf-parser
+```
+
+In node script:
+```js
+
+// allows to parse a file test.sdf that would be present in the same directory
+
+var parse = require('sdf-parser');
+
+var fs = require('fs');
+var sdf = fs.readFileSync('./test.sdf', 'utf-8');
+
+var result = parse(sdf);
+console.log(result);
+
+```
+
+
 ## Test
 
 ```bash
