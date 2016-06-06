@@ -58,7 +58,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function parse(sdf, options) {
 	    var options=options || {};
-	    var only=options.only;
+	    var keep=options.keep;
 	    if (typeof sdf !== 'string') {
 	        throw new TypeError('Parameter "sdf" must be a string');
 	    }
@@ -93,7 +93,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    labels[label].counter++;
 	                } else {
 	                    labels[label] = {counter: 1, isNumeric: true};
-	                    if (! only || only.indexOf(label)>-1) {
+	                    if (! keep || keep.indexOf(label)>-1) {
 	                        labels[label].keep=true;
 	                    } else {
 	                        labels[label].keep=false;
