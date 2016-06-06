@@ -2,7 +2,8 @@
 
 function parse(sdf, options) {
     var options=options || {};
-    var keep=options.keep;
+    var include=options.include;
+    var exclude=options.exclude;
     if (typeof sdf !== 'string') {
         throw new TypeError('Parameter "sdf" must be a string');
     }
@@ -37,7 +38,9 @@ function parse(sdf, options) {
                     labels[label].counter++;
                 } else {
                     labels[label] = {counter: 1, isNumeric: true};
-                    if (! keep || keep.indexOf(label)>-1) {
+                    if (exclude && exclude.indexOf(label)>-1) {
+                        labels[label].keep=false;
+                    } else if (! include || include.indexOf(label)>-1) {
                         labels[label].keep=true;
                     } else {
                         labels[label].keep=false;

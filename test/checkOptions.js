@@ -6,7 +6,10 @@ var sdf = fs.readFileSync(__dirname + '/test.sdf', 'utf-8');
 
 describe('SDF Parser options', function () {
 
-    var result = parse(sdf, {keep:['CLogP','Code']});
+    var result = parse(sdf, {
+        exclude:["Number of H-Donors"],
+        include:["Number of H-Donors",'CLogP','Code']
+    });
     
     it('Check result', function () {
         result.should.be.an.Object;
@@ -28,6 +31,7 @@ describe('SDF Parser options', function () {
 
     it('Check molecules', function () {
         var molecule=result.molecules[0];
+        Object.keys(molecule).length.should.equal(3);
         molecule.Code.should.be.a.String;
         molecule.CLogP.should.be.a.Number;
         molecule.CLogP.should.be.equal(2.7);
