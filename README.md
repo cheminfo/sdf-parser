@@ -28,6 +28,10 @@ console.log(result);
 
 ```
 
+## require('sdf-parser') (sdf, options)
+
+options:
+* only : array of string containing the fields to keep
 
 ## Test
 
