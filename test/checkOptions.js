@@ -6,7 +6,7 @@ var sdf = fs.readFileSync(__dirname + '/test.sdf', 'utf-8');
 
 describe('SDF Parser options', function () {
 
-    var result = parse(sdf, {only:['CLogP','Code']});
+    var result = parse(sdf, {keep:['CLogP','Code']});
     
     it('Check result', function () {
         result.should.be.an.Object;
