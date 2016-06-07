@@ -72,8 +72,9 @@ function parse(sdf, options) {
             if (! filter || filter(molecule)) {
                 molecules.push(molecule);
                 // only now we can increase the counter
-                for (var currentlabel of currentLabels) {
-                    labels[currentlabel].counter++;
+                for (var j=0; j<currentLabels.length; j++) {
+                    var currentLabel=currentLabels[j];
+                    labels[currentLabel].counter++;
                 }
             }
         }
