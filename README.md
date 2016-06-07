@@ -33,6 +33,29 @@ console.log(result);
 options:
 * exclude : array of string containing the fields to discard
 * include : array of string containing the fields to keep
+* modifiers : object of functions that need to be converted during the parsing
+* filter : function that allows to filter the result
+
+## Advanced example with filtering and modifiers
+
+```
+var result = parse(sdf, {
+    exclude:["Number of H-Donors"],
+    include:["Number of H-Donors",'CLogP','Code'],
+    modifiers: {
+        CLogP: function(field) {
+            return {
+                low: field*1-0.2,
+                high: field*1+0.2
+            }
+        }
+    },
+    filter: function(entry) {
+        return (entry.CLogP && entry.CLogP.low>4);
+    }
+});
+```
+
 
 ## Test
 

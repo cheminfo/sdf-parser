@@ -5,6 +5,7 @@ function parse(sdf, options) {
     var include=options.include;
     var exclude=options.exclude;
     var filter=options.filter;
+    var modifiers=options.modifiers || {};
     var forEach=options.forEach || {};
     if (typeof sdf !== 'string') {
         throw new TypeError('Parameter "sdf" must be a string');
@@ -29,28 +30,25 @@ function parse(sdf, options) {
         var parts = sdfPart.split(crlf + '>');
         if (parts.length > 0 && parts[0].length > 5) {
             var molecule = {};
-            molecules.push(molecule);
+            var currentLabels=[];
             molecule.molfile = parts[0] + crlf;
             for (var j = 1; j < parts.length; j++) {
                 var lines = parts[j].split(crlf);
                 var from = lines[0].indexOf('<');
                 var to = lines[0].indexOf('>');
                 var label = lines[0].substring(from + 1, to);
-                if (labels[label]) {
-                    labels[label].counter++;
-                } else {
+                currentLabels.push(label);
+                if (! labels[label]) {
                     labels[label] = {
-                        counter: 1,
+                        counter: 0,
                         isNumeric: true,
                         keep:false
                     };
                     if (exclude && exclude.indexOf(label)>-1) {
-
                     } else if (! include || include.indexOf(label)>-1) {
                         labels[label].keep=true;
+                        if (modifiers[label]) labels[label].modifier=modifiers[label];
                         if (forEach[label]) labels[label].forEach=forEach[label];
-                    } else {
-
                     }
                 }
                 if (labels[label].keep) {
@@ -61,6 +59,9 @@ function parse(sdf, options) {
                             molecule[label] = lines[k];
                         }
                     }
+                    if (labels[label].modifier) {
+                        molecule[label]=labels[label].modifier(molecule[label]);
+                    }
                     if (labels[label].isNumeric) {
                         if (!isFinite(molecule[label])) {
                             labels[label].isNumeric = false;
@@ -68,11 +69,17 @@ function parse(sdf, options) {
                     }
                 }
             }
+            if (! filter || filter(molecule)) {
+                molecules.push(molecule);
+                // only now we can increase the counter
+                for (var currentlabel of currentLabels) {
+                    labels[currentlabel].counter++;
+                }
+            }
         }
     }
 
     // all numeric fields should be converted to numbers
-    var numericFields = [];
     for (var label in labels) {
         var currentLabel = labels[label];
         if (currentLabel.isNumeric) {
