@@ -58,7 +58,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function parse(sdf, options) {
 	    var options=options || {};
-	    var keep=options.keep;
+	    var include=options.include;
+	    var exclude=options.exclude;
+	    var filter=options.filter;
+	    var modifiers=options.modifiers || {};
+	    var forEach=options.forEach || {};
 	    if (typeof sdf !== 'string') {
 	        throw new TypeError('Parameter "sdf" must be a string');
 	    }
@@ -82,21 +86,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var parts = sdfPart.split(crlf + '>');
 	        if (parts.length > 0 && parts[0].length > 5) {
 	            var molecule = {};
-	            molecules.push(molecule);
+	            var currentLabels=[];
 	            molecule.molfile = parts[0] + crlf;
 	            for (var j = 1; j < parts.length; j++) {
 	                var lines = parts[j].split(crlf);
 	                var from = lines[0].indexOf('<');
 	                var to = lines[0].indexOf('>');
 	                var label = lines[0].substring(from + 1, to);
-	                if (labels[label]) {
-	                    labels[label].counter++;
-	                } else {
-	                    labels[label] = {counter: 1, isNumeric: true};
-	                    if (! keep || keep.indexOf(label)>-1) {
+	                currentLabels.push(label);
+	                if (! labels[label]) {
+	                    labels[label] = {
+	                        counter: 0,
+	                        isNumeric: true,
+	                        keep:false
+	                    };
+	                    if (exclude && exclude.indexOf(label)>-1) {
+	                    } else if (! include || include.indexOf(label)>-1) {
 	                        labels[label].keep=true;
-	                    } else {
-	                        labels[label].keep=false;
+	                        if (modifiers[label]) labels[label].modifier=modifiers[label];
+	                        if (forEach[label]) labels[label].forEach=forEach[label];
 	                    }
 	                }
 	                if (labels[label].keep) {
@@ -107,6 +115,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            molecule[label] = lines[k];
 	                        }
 	                    }
+	                    if (labels[label].modifier) {
+	                        molecule[label]=labels[label].modifier(molecule[label]);
+	                    }
 	                    if (labels[label].isNumeric) {
 	                        if (!isFinite(molecule[label])) {
 	                            labels[label].isNumeric = false;
@@ -114,11 +125,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 	            }
+	            if (! filter || filter(molecule)) {
+	                molecules.push(molecule);
+	                // only now we can increase the counter
+	                for (var j=0; j<currentLabels.length; j++) {
+	                    var currentLabel=currentLabels[j];
+	                    labels[currentLabel].counter++;
+	                }
+	            }
 	        }
 	    }
 
 	    // all numeric fields should be converted to numbers
-	    var numericFields = [];
 	    for (var label in labels) {
 	        var currentLabel = labels[label];
 	        if (currentLabel.isNumeric) {
