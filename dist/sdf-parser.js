@@ -116,7 +116,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        }
 	                    }
 	                    if (labels[label].modifier) {
-	                        molecule[label]=labels[label].modifier(molecule[label]);
+	                        var modifiedValue=labels[label].modifier(molecule[label]);
+	                        if (modifiedValue===undefined || modifiedValue===null) {
+	                            delete molecule[label];
+	                        } else {
+	                            molecule[label]=modifiedValue;
+	                        }
 	                    }
 	                    if (labels[label].isNumeric) {
 	                        if (!isFinite(molecule[label])) {
