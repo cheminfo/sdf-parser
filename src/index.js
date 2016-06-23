@@ -12,14 +12,14 @@ function parse(sdf, options) {
     }
     // we will find the delimiter in order to be much faster and not use regular expression
     var header = sdf.substr(0, 1000);
-    var crlf = '\n';
+    var eol = '\n';
     if (header.indexOf('\r\n') > -1) {
-        crlf = '\r\n';
+        eol = '\r\n';
     } else if (header.indexOf('\r') > -1) {
-        crlf = '\r';
+        eol = '\r';
     }
 
-    var sdfParts = sdf.split(crlf + '$$$$' + crlf);
+    var sdfParts = sdf.split(new RegExp(eol+'\\$\\$\\$\\$.*'+eol));
     var molecules = [];
     var labels = {};
 
@@ -27,13 +27,13 @@ function parse(sdf, options) {
     
     for (var i=0; i < sdfParts.length; i++) {
         var sdfPart = sdfParts[i];
-        var parts = sdfPart.split(crlf + '>');
+        var parts = sdfPart.split(eol + '>');
         if (parts.length > 0 && parts[0].length > 5) {
             var molecule = {};
             var currentLabels=[];
-            molecule.molfile = parts[0] + crlf;
+            molecule.molfile = parts[0] + eol;
             for (var j = 1; j < parts.length; j++) {
-                var lines = parts[j].split(crlf);
+                var lines = parts[j].split(eol);
                 var from = lines[0].indexOf('<');
                 var to = lines[0].indexOf('>');
                 var label = lines[0].substring(from + 1, to);
@@ -54,7 +54,7 @@ function parse(sdf, options) {
                 if (labels[label].keep) {
                     for (var k = 1; k < lines.length - 1; k++) {
                         if (molecule[label]) {
-                            molecule[label] += crlf + lines[k];
+                            molecule[label] += eol + lines[k];
                         } else {
                             molecule[label] = lines[k];
                         }
