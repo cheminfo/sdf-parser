@@ -35,6 +35,7 @@ options:
 * include : array of string containing the fields to keep
 * modifiers : object of functions that need to be converted during the parsing
 * filter : function that allows to filter the result
+* mixedEOL : if set to true will try to deal with mixed End Of Line separator
 
 ## Advanced example with filtering and modifiers
 

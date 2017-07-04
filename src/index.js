@@ -10,13 +10,19 @@ function parse(sdf, options) {
     if (typeof sdf !== 'string') {
         throw new TypeError('Parameter "sdf" must be a string');
     }
-    // we will find the delimiter in order to be much faster and not use regular expression
-    var header = sdf.substr(0, 1000);
-    var eol = '\n';
-    if (header.indexOf('\r\n') > -1) {
-        eol = '\r\n';
-    } else if (header.indexOf('\r') > -1) {
-        eol = '\r';
+
+    var crlf = '\n';
+    if (options.mixedEOL) {
+        sdf=sdf.replace(/\r\n/g, "\n");
+        sdf=sdf.replace(/\r/g, "\n");
+    } else {
+        // we will find the delimiter in order to be much faster and not use regular expression
+        var header = sdf.substr(0, 1000);
+        if (header.indexOf('\r\n') > -1) {
+            crlf = '\r\n';
+        } else if (header.indexOf('\r') > -1) {
+            crlf = '\r';
+        }
     }
 
     var sdfParts = sdf.split(new RegExp(eol+'\\$\\$\\$\\$.*'+eol));
