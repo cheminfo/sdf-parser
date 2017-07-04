@@ -11,7 +11,7 @@ function parse(sdf, options) {
         throw new TypeError('Parameter "sdf" must be a string');
     }
 
-    var crlf = '\n';
+    var eol = '\n';
     if (options.mixedEOL) {
         sdf=sdf.replace(/\r\n/g, "\n");
         sdf=sdf.replace(/\r/g, "\n");
@@ -19,9 +19,9 @@ function parse(sdf, options) {
         // we will find the delimiter in order to be much faster and not use regular expression
         var header = sdf.substr(0, 1000);
         if (header.indexOf('\r\n') > -1) {
-            crlf = '\r\n';
+            eol = '\r\n';
         } else if (header.indexOf('\r') > -1) {
-            crlf = '\r';
+            eol = '\r';
         }
     }
 
