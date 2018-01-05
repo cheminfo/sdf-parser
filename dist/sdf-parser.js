@@ -1,3 +1,9 @@
+/**
+ * sdf-parser - SDF parser
+ * @version v3.0.0
+ * @link https://github.com/cheminfo-js/sdf-parser
+ * @license MIT
+ */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -7,7 +13,7 @@
 		exports["SDFParser"] = factory();
 	else
 		root["SDFParser"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -42,9 +48,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -83,8 +86,10 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
+var stream = __webpack_require__(1);
+
 function parse(sdf, options) {
-    var options = options || {};
+    options = options || {};
     var include = options.include;
     var exclude = options.exclude;
     var filter = options.filter;
@@ -96,8 +101,8 @@ function parse(sdf, options) {
 
     var eol = '\n';
     if (options.mixedEOL) {
-        sdf = sdf.replace(/\r\n/g, "\n");
-        sdf = sdf.replace(/\r/g, "\n");
+        sdf = sdf.replace(/\r\n/g, '\n');
+        sdf = sdf.replace(/\r/g, '\n');
     } else {
         // we will find the delimiter in order to be much faster and not use regular expression
         var header = sdf.substr(0, 1000);
@@ -133,7 +138,7 @@ function parse(sdf, options) {
                         isNumeric: true,
                         keep: false
                     };
-                    if (exclude && exclude.indexOf(label) > -1) {} else if (!include || include.indexOf(label) > -1) {
+                    if ((!exclude || exclude.indexOf(label) === -1) && (!include || include.indexOf(label) > -1)) {
                         labels[label].keep = true;
                         if (modifiers[label]) labels[label].modifier = modifiers[label];
                         if (forEach[label]) labels[label].forEach = forEach[label];
@@ -165,7 +170,7 @@ function parse(sdf, options) {
             if (!filter || filter(molecule)) {
                 molecules.push(molecule);
                 // only now we can increase the counter
-                for (var j = 0; j < currentLabels.length; j++) {
+                for (j = 0; j < currentLabels.length; j++) {
                     var currentLabel = currentLabels[j];
                     labels[currentLabel].counter++;
                 }
@@ -174,12 +179,12 @@ function parse(sdf, options) {
     }
 
     // all numeric fields should be converted to numbers
-    for (var label in labels) {
-        var currentLabel = labels[label];
+    for (label in labels) {
+        currentLabel = labels[label];
         if (currentLabel.isNumeric) {
             currentLabel.minValue = Infinity;
             currentLabel.maxValue = -Infinity;
-            for (var j = 0; j < molecules.length; j++) {
+            for (j = 0; j < molecules.length; j++) {
                 if (molecules[j][label]) {
                     var value = parseFloat(molecules[j][label]);
                     molecules[j][label] = value;
@@ -200,7 +205,7 @@ function parse(sdf, options) {
     }
 
     var statistics = [];
-    for (var key in labels) {
+    for (key in labels) {
         var statistic = labels[key];
         statistic.label = key;
         statistics.push(statistic);
@@ -215,7 +220,18 @@ function parse(sdf, options) {
 }
 
 module.exports = parse;
+parse.stream = stream;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {};
 
 /***/ })
 /******/ ]);
 });
+//# sourceMappingURL=sdf-parser.js.map
