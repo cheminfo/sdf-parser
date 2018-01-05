@@ -1,3 +1,5 @@
+'use strict';
+
 var parse = require('..');
 
 var fs = require('fs');
@@ -10,7 +12,7 @@ describe('SDF Parser', function () {
     var result = parse(sdf);
 
     it('Check result', function () {
-        result.should.be.an.Object;
+        result.should.be.an.Object();
         result.should.have.properties('labels', 'molecules', 'statistics');
     });
 
@@ -29,11 +31,11 @@ describe('SDF Parser', function () {
     });
 
     it('Check molecules', function () {
-        var molecule=result.molecules[0];
-        molecule.Code.should.be.a.String;
-        molecule.CLogP.should.be.a.Number;
+        var molecule = result.molecules[0];
+        molecule.Code.should.be.a.String();
+        molecule.CLogP.should.be.a.Number();
         molecule.CLogP.should.be.equal(2.7);
-        molecule.molfile.split("\n").length.should.equal(37);
+        molecule.molfile.split('\n').length.should.equal(37);
     });
 
     it('should throw with non-string argument', function () {
@@ -46,6 +48,6 @@ describe('SDF Parser', function () {
         (function () {
             parse({});
         }).should.throw(TypeError);
-    })
+    });
 
 });

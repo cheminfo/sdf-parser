@@ -1,20 +1,20 @@
 'use strict';
 
 function parse(sdf, options) {
-    var options=options || {};
-    var include=options.include;
-    var exclude=options.exclude;
-    var filter=options.filter;
-    var modifiers=options.modifiers || {};
-    var forEach=options.forEach || {};
+    options = options || {};
+    var include = options.include;
+    var exclude = options.exclude;
+    var filter = options.filter;
+    var modifiers = options.modifiers || {};
+    var forEach = options.forEach || {};
     if (typeof sdf !== 'string') {
         throw new TypeError('Parameter "sdf" must be a string');
     }
 
     var eol = '\n';
     if (options.mixedEOL) {
-        sdf=sdf.replace(/\r\n/g, "\n");
-        sdf=sdf.replace(/\r/g, "\n");
+        sdf = sdf.replace(/\r\n/g, '\n');
+        sdf = sdf.replace(/\r/g, '\n');
     } else {
         // we will find the delimiter in order to be much faster and not use regular expression
         var header = sdf.substr(0, 1000);
@@ -25,18 +25,18 @@ function parse(sdf, options) {
         }
     }
 
-    var sdfParts = sdf.split(new RegExp(eol+'\\$\\$\\$\\$.*'+eol));
+    var sdfParts = sdf.split(new RegExp(eol + '\\$\\$\\$\\$.*' + eol));
     var molecules = [];
     var labels = {};
 
     var start = Date.now();
-    
-    for (var i=0; i < sdfParts.length; i++) {
+
+    for (var i = 0; i < sdfParts.length; i++) {
         var sdfPart = sdfParts[i];
         var parts = sdfPart.split(eol + '>');
         if (parts.length > 0 && parts[0].length > 5) {
             var molecule = {};
-            var currentLabels=[];
+            var currentLabels = [];
             molecule.molfile = parts[0] + eol;
             for (var j = 1; j < parts.length; j++) {
                 var lines = parts[j].split(eol);
@@ -44,17 +44,19 @@ function parse(sdf, options) {
                 var to = lines[0].indexOf('>');
                 var label = lines[0].substring(from + 1, to);
                 currentLabels.push(label);
-                if (! labels[label]) {
+                if (!labels[label]) {
                     labels[label] = {
                         counter: 0,
                         isNumeric: true,
-                        keep:false
+                        keep: false
                     };
-                    if (exclude && exclude.indexOf(label)>-1) {
-                    } else if (! include || include.indexOf(label)>-1) {
-                        labels[label].keep=true;
-                        if (modifiers[label]) labels[label].modifier=modifiers[label];
-                        if (forEach[label]) labels[label].forEach=forEach[label];
+                    if (
+                        (!exclude || exclude.indexOf(label) === -1) &&
+                        (!include || include.indexOf(label) > -1)
+                    ) {
+                        labels[label].keep = true;
+                        if (modifiers[label]) labels[label].modifier = modifiers[label];
+                        if (forEach[label]) labels[label].forEach = forEach[label];
                     }
                 }
                 if (labels[label].keep) {
@@ -66,11 +68,11 @@ function parse(sdf, options) {
                         }
                     }
                     if (labels[label].modifier) {
-                        var modifiedValue=labels[label].modifier(molecule[label]);
-                        if (modifiedValue===undefined || modifiedValue===null) {
+                        var modifiedValue = labels[label].modifier(molecule[label]);
+                        if (modifiedValue === undefined || modifiedValue === null) {
                             delete molecule[label];
                         } else {
-                            molecule[label]=modifiedValue;
+                            molecule[label] = modifiedValue;
                         }
                     }
                     if (labels[label].isNumeric) {
@@ -80,11 +82,11 @@ function parse(sdf, options) {
                     }
                 }
             }
-            if (! filter || filter(molecule)) {
+            if (!filter || filter(molecule)) {
                 molecules.push(molecule);
                 // only now we can increase the counter
-                for (var j=0; j<currentLabels.length; j++) {
-                    var currentLabel=currentLabels[j];
+                for (j = 0; j < currentLabels.length; j++) {
+                    var currentLabel = currentLabels[j];
                     labels[currentLabel].counter++;
                 }
             }
@@ -92,12 +94,12 @@ function parse(sdf, options) {
     }
 
     // all numeric fields should be converted to numbers
-    for (var label in labels) {
-        var currentLabel = labels[label];
+    for (label in labels) {
+        currentLabel = labels[label];
         if (currentLabel.isNumeric) {
             currentLabel.minValue = Infinity;
             currentLabel.maxValue = -Infinity;
-            for (var j = 0; j < molecules.length; j++) {
+            for (j = 0; j < molecules.length; j++) {
                 if (molecules[j][label]) {
                     var value = parseFloat(molecules[j][label]);
                     molecules[j][label] = value;
@@ -118,7 +120,7 @@ function parse(sdf, options) {
     }
 
     var statistics = [];
-    for (var key in labels) {
+    for (key in labels) {
         var statistic = labels[key];
         statistic.label = key;
         statistics.push(statistic);
