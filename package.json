@@ -3,12 +3,13 @@
   "version": "2.3.1",
   "description": "SDF parser",
   "main": "./src/index.js",
-  "directories": {
-    "lib": "src",
-    "test": "test"
-  },
+  "files": [
+    "src"
+  ],
   "scripts": {
-    "test": "mocha --require should --reporter mocha-better-spec-reporter --recursive",
+    "eslint": "eslint src __tests__",
+    "eslint-fix": "npm run eslint -- --fix",
+    "test": "jest && npm run eslint",
     "build": "cheminfo build --root SDFParser"
   },
   "repository": {
@@ -29,9 +30,11 @@
   },
   "homepage": "https://github.com/cheminfo-js/sdf-parser",
   "devDependencies": {
-    "cheminfo-tools": "^1.0.2",
-    "mocha": "^2.2.5",
-    "mocha-better-spec-reporter": "^2.1.1",
-    "should": "^7.0.2"
+    "cheminfo-tools": "^1.20.2",
+    "eslint": "^4.14.0",
+    "eslint-config-cheminfo": "^1.9.1",
+    "eslint-plugin-no-only-tests": "^2.0.0",
+    "jest": "^22.0.4",
+    "should": "^13.2.0"
   }
 }

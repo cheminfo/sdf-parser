@@ -1,7 +1,7 @@
 var parse = require('..');
 
 var fs = require('fs');
-
+require('should');
 
 describe('SDF Parser of non well formatted file', function () {
     var sdf = fs.readFileSync(__dirname + '/test2.sdf', 'utf-8');

@@ -1,0 +1,3 @@
+extends: cheminfo
+env:
+  jest: true

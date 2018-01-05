@@ -1,6 +1,7 @@
 var parse = require('..');
 
 var fs = require('fs');
+require('should');
 
 var sdf = fs.readFileSync(__dirname + '/test.sdf', 'utf-8');
 
