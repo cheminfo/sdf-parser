@@ -12,6 +12,9 @@
     "test": "jest && npm run eslint",
     "build": "cheminfo build --root SDFParser"
   },
+  "browser": {
+    "./src/stream.js": "./src/stream.browser.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/cheminfo-js/sdf-parser.git"
@@ -30,11 +33,19 @@
   },
   "homepage": "https://github.com/cheminfo-js/sdf-parser",
   "devDependencies": {
+    "callback-stream": "^1.1.0",
     "cheminfo-tools": "^1.20.2",
     "eslint": "^4.14.0",
     "eslint-config-cheminfo": "^1.9.1",
     "eslint-plugin-no-only-tests": "^2.0.0",
     "jest": "^22.0.4",
+    "openchemlib": "^5.5.0",
     "should": "^13.2.0"
+  },
+  "dependencies": {
+    "multipipe": "^2.0.1",
+    "split2": "^2.2.0",
+    "through2": "^2.0.3",
+    "through2-filter": "^2.0.0"
   }
 }

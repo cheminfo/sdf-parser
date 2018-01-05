@@ -1,5 +1,7 @@
 'use strict';
 
+const stream = require('./stream');
+
 function parse(sdf, options) {
     options = options || {};
     var include = options.include;
@@ -136,3 +138,4 @@ function parse(sdf, options) {
 }
 
 module.exports = parse;
+parse.stream = stream;
