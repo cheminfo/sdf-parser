@@ -9,7 +9,7 @@ const cbStream = callbackStream.bind(null, {objectMode: true});
 const {
     entries,
     molecules
-} = require('../src/stream');
+} = require('..').stream;
 
 describe('stream', () => {
     it('entries', (done) => {

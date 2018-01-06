@@ -5,7 +5,7 @@ const split2 = require('split2');
 const filter = require('through2-filter');
 const through2 = require('through2');
 
-const parse = require('./index');
+const parse = require('./parse');
 
 const filterStream = filter.bind(null, {objectMode: true});
 function filterCb(chunk) {
