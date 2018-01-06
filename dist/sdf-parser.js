@@ -1,6 +1,6 @@
 /**
  * sdf-parser - SDF parser
- * @version v3.0.0
+ * @version v3.0.1
  * @link https://github.com/cheminfo-js/sdf-parser
  * @license MIT
  */
@@ -86,7 +86,18 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var stream = __webpack_require__(1);
+var parse = __webpack_require__(1);
+var stream = __webpack_require__(2);
+
+module.exports = parse;
+parse.stream = stream;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function parse(sdf, options) {
     options = options || {};
@@ -220,10 +231,9 @@ function parse(sdf, options) {
 }
 
 module.exports = parse;
-parse.stream = stream;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
