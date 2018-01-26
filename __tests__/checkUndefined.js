@@ -22,12 +22,10 @@ describe('SDF Parser options and undefined', function () {
         }
     });
 
-
     it('Check result', function () {
         result.should.be.an.Object();
         result.should.have.properties('labels', 'molecules', 'statistics');
     });
-
 
     it('Check molecules', function () {
         result.molecules.length.should.be.equal(0);

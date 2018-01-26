@@ -1,12 +1,15 @@
 'use strict';
 
-function parse(sdf, options) {
-    options = options || {};
-    var include = options.include;
-    var exclude = options.exclude;
-    var filter = options.filter;
-    var modifiers = options.modifiers || {};
-    var forEach = options.forEach || {};
+function parse(sdf, options = {}) {
+    const {
+        include,
+        exclude,
+        filter,
+        modifiers = {},
+        forEach = {},
+        dynamicTyping = true
+    } = options;
+
     if (typeof sdf !== 'string') {
         throw new TypeError('Parameter "sdf" must be a string');
     }
@@ -47,7 +50,7 @@ function parse(sdf, options) {
                 if (!labels[label]) {
                     labels[label] = {
                         counter: 0,
-                        isNumeric: true,
+                        isNumeric: dynamicTyping,
                         keep: false
                     };
                     if (
@@ -76,7 +79,7 @@ function parse(sdf, options) {
                         }
                     }
                     if (labels[label].isNumeric) {
-                        if (!isFinite(molecule[label])) {
+                        if (!isFinite(molecule[label]) || molecule[label].match(/^0[0-9]/)) {
                             labels[label].isNumeric = false;
                         }
                     }

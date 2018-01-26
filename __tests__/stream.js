@@ -30,7 +30,7 @@ describe('stream', () => {
             .pipe(cbStream((err, data) => {
                 expect(data).toHaveLength(128);
                 expect(data[0]).toMatchObject({
-                    Code: 100380824,
+                    Code: '0100380824',
                     CLogP: 2.7
                 });
                 expect(data[0].molfile).toContain('-ISIS-  04231216572D');
