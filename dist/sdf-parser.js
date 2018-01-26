@@ -1,6 +1,6 @@
 /**
  * sdf-parser - SDF parser
- * @version v3.0.1
+ * @version v3.1.0
  * @link https://github.com/cheminfo-js/sdf-parser
  * @license MIT
  */
@@ -99,13 +99,18 @@ parse.stream = stream;
 "use strict";
 
 
-function parse(sdf, options) {
-    options = options || {};
-    var include = options.include;
-    var exclude = options.exclude;
-    var filter = options.filter;
-    var modifiers = options.modifiers || {};
-    var forEach = options.forEach || {};
+function parse(sdf, options = {}) {
+    var include = options.include,
+        exclude = options.exclude,
+        filter = options.filter,
+        _options$modifiers = options.modifiers,
+        modifiers = _options$modifiers === undefined ? {} : _options$modifiers,
+        _options$forEach = options.forEach,
+        forEach = _options$forEach === undefined ? {} : _options$forEach,
+        _options$dynamicTypin = options.dynamicTyping,
+        dynamicTyping = _options$dynamicTypin === undefined ? true : _options$dynamicTypin;
+
+
     if (typeof sdf !== 'string') {
         throw new TypeError('Parameter "sdf" must be a string');
     }
@@ -146,7 +151,7 @@ function parse(sdf, options) {
                 if (!labels[label]) {
                     labels[label] = {
                         counter: 0,
-                        isNumeric: true,
+                        isNumeric: dynamicTyping,
                         keep: false
                     };
                     if ((!exclude || exclude.indexOf(label) === -1) && (!include || include.indexOf(label) > -1)) {
@@ -172,7 +177,7 @@ function parse(sdf, options) {
                         }
                     }
                     if (labels[label].isNumeric) {
-                        if (!isFinite(molecule[label])) {
+                        if (!isFinite(molecule[label]) || molecule[label].match(/^0[0-9]/)) {
                             labels[label].isNumeric = false;
                         }
                     }

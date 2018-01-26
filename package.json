@@ -1,6 +1,6 @@
 {
   "name": "sdf-parser",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "SDF parser",
   "main": "./src/index.js",
   "files": [
@@ -35,12 +35,12 @@
   "devDependencies": {
     "callback-stream": "^1.1.0",
     "cheminfo-tools": "^1.20.2",
-    "eslint": "^4.14.0",
-    "eslint-config-cheminfo": "^1.9.1",
+    "eslint": "^4.16.0",
+    "eslint-config-cheminfo": "^1.14.1",
     "eslint-plugin-no-only-tests": "^2.0.0",
-    "jest": "^22.0.4",
+    "jest": "^22.1.4",
     "openchemlib": "^5.5.0",
-    "should": "^13.2.0"
+    "should": "^13.2.1"
   },
   "dependencies": {
     "multipipe": "^2.0.1",
