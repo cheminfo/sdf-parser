@@ -3,7 +3,6 @@
 var parse = require('..');
 
 var fs = require('fs');
-require('should');
 
 var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
@@ -11,43 +10,36 @@ describe('SDF Parser', function () {
 
   var result = parse(sdf);
 
-  it('Check result', function () {
-    result.should.be.an.Object();
-    result.should.have.properties('labels', 'molecules', 'statistics');
-  });
-
   it('Check statistics', function () {
-    result.statistics[0].should.have.properties('counter', 'isNumeric', 'label');
-    result.statistics[0].counter.should.be.equal(128);
-    result.statistics[0].isNumeric.should.be.equal(false);
-    result.statistics[0].label.should.be.equal('Code');
-    result.statistics[1].counter.should.be.equal(128);
-    result.statistics[1].minValue.should.be.equal(0);
-    result.statistics[1].maxValue.should.be.equal(5);
-    result.statistics[1].isNumeric.should.be.equal(true);
-    result.statistics[1].label.should.be.equal('Number of H-Donors');
-    result.statistics[0].always.should.be.equal(true);
-    result.statistics[4].always.should.be.equal(false);
+    expect(result.statistics[0].counter).toBe(128);
+    expect(result.statistics[0].isNumeric).toBe(false);
+    expect(result.statistics[0].label).toBe('Code');
+    expect(result.statistics[1].counter).toBe(128);
+    expect(result.statistics[1].minValue).toBe(0);
+    expect(result.statistics[1].maxValue).toBe(5);
+    expect(result.statistics[1].isNumeric).toBe(true);
+    expect(result.statistics[1].label).toBe('Number of H-Donors');
+    expect(result.statistics[0].always).toBe(true);
+    expect(result.statistics[4].always).toBe(false);
   });
 
   it('Check molecules', function () {
     var molecule = result.molecules[0];
-    molecule.Code.should.be.a.String();
-    molecule.CLogP.should.be.a.Number();
-    molecule.CLogP.should.be.equal(2.7);
-    molecule.molfile.split('\n').length.should.equal(37);
+    expect(molecule.Code).toContain('0100380824');
+    expect(molecule.CLogP).toBe(2.7);
+    expect(molecule.molfile.split('\n')).toHaveLength(37);
   });
 
   it('should throw with non-string argument', function () {
-    (function () {
+    expect(function () {
       parse();
-    }).should.throw(TypeError);
-    (function () {
+    }).toThrowError(TypeError);
+    expect(function () {
       parse(42);
-    }).should.throw(TypeError);
-    (function () {
+    }).toThrowError(TypeError);
+    expect(function () {
       parse({});
-    }).should.throw(TypeError);
+    }).toThrowError(TypeError);
   });
 
 });
@@ -58,31 +50,25 @@ describe('SDF Parser no dynamicTyping', function () {
     dynamicTyping: false
   });
 
-  it('Check result', function () {
-    result.should.be.an.Object();
-    result.should.have.properties('labels', 'molecules', 'statistics');
-  });
-
   it('Check statistics', function () {
-    result.statistics[0].should.have.properties('counter', 'isNumeric', 'label');
-    result.statistics[0].counter.should.be.equal(128);
-    result.statistics[0].isNumeric.should.be.equal(false);
-    result.statistics[0].label.should.be.equal('Code');
-    result.statistics[1].counter.should.be.equal(128);
+    expect(result.statistics[0].counter).toBe(128);
+    expect(result.statistics[0].isNumeric).toBe(false);
+    expect(result.statistics[0].label).toBe('Code');
+    expect(result.statistics[1].counter).toBe(128);
     expect(result.statistics[1].minValue).toBeUndefined();
     expect(result.statistics[1].maxValue).toBeUndefined();
-    result.statistics[1].isNumeric.should.be.equal(false);
-    result.statistics[1].label.should.be.equal('Number of H-Donors');
-    result.statistics[0].always.should.be.equal(true);
-    result.statistics[4].always.should.be.equal(false);
+    expect(result.statistics[1].isNumeric).toBe(false);
+    expect(result.statistics[1].label).toBe('Number of H-Donors');
+    expect(result.statistics[0].always).toBe(true);
+    expect(result.statistics[4].always).toBe(false);
   });
 
   it('Check molecules', function () {
     var molecule = result.molecules[0];
-    molecule.Code.should.be.a.String();
-    molecule.CLogP.should.be.a.String();
-    molecule.CLogP.should.be.equal('2.700000000000000e+000');
-    molecule.molfile.split('\n').length.should.equal(37);
+    expect(typeof molecule.Code).toBe('string');
+    expect(typeof molecule.CLogP).toBe('string');
+    expect(molecule.CLogP).toBe('2.700000000000000e+000');
+    expect(molecule.molfile.split('\n')).toHaveLength(37);
   });
 
 

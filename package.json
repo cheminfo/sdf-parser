@@ -40,8 +40,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.7.0",
     "jest": "^22.1.4",
-    "openchemlib": "^5.5.0",
-    "should": "^13.2.1"
+    "openchemlib": "^5.5.0"
   },
   "dependencies": {
     "multipipe": "^2.0.1",

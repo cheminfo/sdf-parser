@@ -3,7 +3,6 @@
 var parse = require('..');
 
 var fs = require('fs');
-require('should');
 
 var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
@@ -22,13 +21,8 @@ describe('SDF Parser options and undefined', function () {
     }
   });
 
-  it('Check result', function () {
-    result.should.be.an.Object();
-    result.should.have.properties('labels', 'molecules', 'statistics');
-  });
-
   it('Check molecules', function () {
-    result.molecules.length.should.be.equal(0);
+    expect(result.molecules).toHaveLength(0);
   });
 
 });

@@ -3,7 +3,6 @@
 var parse = require('..');
 
 var fs = require('fs');
-require('should');
 
 var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
@@ -25,45 +24,38 @@ describe('SDF Parser options', function () {
     }
   });
 
-
-  it('Check result', function () {
-    result.should.be.an.Object();
-    result.should.have.properties('labels', 'molecules', 'statistics');
-  });
   it('Check statistics', function () {
-    result.statistics[0].should.have.properties('counter', 'isNumeric', 'label');
-    result.statistics[0].counter.should.be.equal(43);
-    result.statistics[0].isNumeric.should.be.equal(false);
-    result.statistics[0].label.should.be.equal('Code');
-    result.statistics[0].always.should.be.equal(true);
-    result.statistics[4].counter.should.be.equal(43);
-    result.statistics[4].isNumeric.should.be.equal(false);
-    result.statistics[4].label.should.be.equal('CLogP');
-    result.statistics[4].always.should.be.equal(true);
+    expect(result.statistics[0].counter).toBe(43);
+    expect(result.statistics[0].isNumeric).toBe(false);
+    expect(result.statistics[0].label).toBe('Code');
+    expect(result.statistics[0].always).toBe(true);
+    expect(result.statistics[4].counter).toBe(43);
+    expect(result.statistics[4].isNumeric).toBe(false);
+    expect(result.statistics[4].label).toBe('CLogP');
+    expect(result.statistics[4].always).toBe(true);
   });
 
   it('Check molecules', function () {
-    result.molecules.length.should.be.equal(43);
+    expect(result.molecules).toHaveLength(43);
     var molecule = result.molecules[0];
 
-    Object.keys(molecule).length.should.equal(3);
-    molecule.Code.should.be.a.String();
-    molecule.CLogP.should.be.a.Object();
-    molecule.CLogP.low.should.be.approximately(4.8, 0.0001);
-    molecule.CLogP.high.should.be.approximately(5.2, 0.0001);
-    molecule.molfile.split('\n').length.should.equal(56);
+    expect(Object.keys(molecule)).toHaveLength(3);
+    expect(molecule.Code).toBe('0100380851');
+    expect(molecule.CLogP.low).toBeCloseTo(4.8, 0.0001);
+    expect(molecule.CLogP.high).toBeCloseTo(5.2, 0.0001);
+    expect(molecule.molfile.split('\n')).toHaveLength(56);
   });
 
   it('should throw with non-string argument', function () {
-    (function () {
+    expect(function () {
       parse();
-    }).should.throw(TypeError);
-    (function () {
+    }).toThrowError(TypeError);
+    expect(function () {
       parse(42);
-    }).should.throw(TypeError);
-    (function () {
+    }).toThrowError(TypeError);
+    expect(function () {
       parse({});
-    }).should.throw(TypeError);
+    }).toThrowError(TypeError);
   });
 
 });
