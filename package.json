@@ -37,7 +37,8 @@
     "cheminfo-tools": "^1.20.2",
     "eslint": "^4.16.0",
     "eslint-config-cheminfo": "^1.14.1",
-    "eslint-plugin-no-only-tests": "^2.0.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.7.0",
     "jest": "^22.1.4",
     "openchemlib": "^5.5.0",
     "should": "^13.2.1"
