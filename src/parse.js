@@ -55,7 +55,7 @@ function parse(sdf, options = {}) {
           };
           if (
             (!exclude || exclude.indexOf(label) === -1) &&
-                        (!include || include.indexOf(label) > -1)
+            (!include || include.indexOf(label) > -1)
           ) {
             labels[label].keep = true;
             if (modifiers[label]) labels[label].modifier = modifiers[label];
@@ -79,7 +79,10 @@ function parse(sdf, options = {}) {
             }
           }
           if (labels[label].isNumeric) {
-            if (!isFinite(molecule[label]) || molecule[label].match(/^0[0-9]/)) {
+            if (
+              !isFinite(molecule[label]) ||
+              molecule[label].match(/^0[0-9]/)
+            ) {
               labels[label].isNumeric = false;
             }
           }
@@ -135,7 +138,6 @@ function parse(sdf, options = {}) {
     labels: Object.keys(labels),
     statistics: statistics
   };
-
 }
 
 module.exports = parse;

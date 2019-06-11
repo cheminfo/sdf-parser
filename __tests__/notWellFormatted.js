@@ -13,5 +13,4 @@ describe('SDF Parser of non well formatted file', function () {
     var molecules = result.molecules;
     expect(molecules).toHaveLength(7);
   });
-
 });

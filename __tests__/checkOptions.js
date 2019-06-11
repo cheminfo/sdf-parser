@@ -7,7 +7,6 @@ var fs = require('fs');
 var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
 describe('SDF Parser options', function () {
-
   var result = parse(sdf, {
     exclude: ['Number of H-Donors'],
     include: ['Number of H-Donors', 'CLogP', 'Code'],
@@ -20,7 +19,7 @@ describe('SDF Parser options', function () {
       }
     },
     filter: function (entry) {
-      return (entry.CLogP && entry.CLogP.low > 4);
+      return entry.CLogP && entry.CLogP.low > 4;
     }
   });
 
@@ -49,13 +48,12 @@ describe('SDF Parser options', function () {
   it('should throw with non-string argument', function () {
     expect(function () {
       parse();
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
     expect(function () {
       parse(42);
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
     expect(function () {
       parse({});
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
   });
-
 });

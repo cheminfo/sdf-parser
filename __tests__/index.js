@@ -7,7 +7,6 @@ var fs = require('fs');
 var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
 describe('SDF Parser', function () {
-
   var result = parse(sdf);
 
   it('Check statistics', function () {
@@ -33,19 +32,17 @@ describe('SDF Parser', function () {
   it('should throw with non-string argument', function () {
     expect(function () {
       parse();
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
     expect(function () {
       parse(42);
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
     expect(function () {
       parse({});
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
   });
-
 });
 
 describe('SDF Parser no dynamicTyping', function () {
-
   var result = parse(sdf, {
     dynamicTyping: false
   });
@@ -70,6 +67,4 @@ describe('SDF Parser no dynamicTyping', function () {
     expect(molecule.CLogP).toBe('2.700000000000000e+000');
     expect(molecule.molfile.split('\n')).toHaveLength(37);
   });
-
-
 });
