@@ -1,6 +1,6 @@
 'use strict';
 
-const combine = require('multipipe');
+const pipeline = require('pumpify');
 const split2 = require('split2');
 const filter = require('through2-filter');
 const through2 = require('through2');
@@ -13,7 +13,7 @@ function filterCb(chunk) {
 }
 
 function entries() {
-  return combine(
+  return pipeline.obj(
     split2(/\r?\n\${4}.*\r?\n/),
     filterStream(filterCb),
     through2({ objectMode: true }, function (value, encoding, callback) {
@@ -25,7 +25,7 @@ function entries() {
 }
 
 function molecules(options) {
-  return combine(
+  return pipeline.obj(
     entries(),
     through2({ objectMode: true }, function (value, encoding, callback) {
       try {
