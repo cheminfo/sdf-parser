@@ -1,6 +1,6 @@
 'use strict';
 
-const pipeline = require('pumpify');
+const pipeline = require('@targos/pumpify');
 const split2 = require('split2');
 const filter = require('through2-filter');
 const through2 = require('through2');

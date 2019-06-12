@@ -85,4 +85,16 @@ describe('stream', () => {
           })
         );
     }));
+
+  it('async iteration', async () => {
+    const stream = fs
+      .createReadStream(`${__dirname}/test.sdf`)
+      .pipe(molecules());
+    let count = 0;
+    for await (const molecule of stream) {
+      count++;
+      expect(molecule.molfile.toString()).toContain('0999 V2000');
+    }
+    expect(count).toBe(128);
+  });
 });
