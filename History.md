@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/cheminfo-js/sdf-parser/compare/v4.0.0...v4.0.1) (2019-06-12)
+
+
+### Bug Fixes
+
+* back to pumpify ([387c3eb](https://github.com/cheminfo-js/sdf-parser/commit/387c3eb))
+
+
+
 # [4.0.0](https://github.com/cheminfo-js/sdf-parser/compare/v3.1.0...v4.0.0) (2019-06-12)
 
 
