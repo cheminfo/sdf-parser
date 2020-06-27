@@ -1,13 +1,13 @@
 'use strict';
 
-var parse = require('..');
+let fs = require('fs');
 
-var fs = require('fs');
+let parse = require('..');
 
-var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
+let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
 describe('SDF Parser', function () {
-  var result = parse(sdf);
+  let result = parse(sdf);
 
   it('Check statistics', function () {
     expect(result.statistics[0].counter).toBe(128);
@@ -23,7 +23,7 @@ describe('SDF Parser', function () {
   });
 
   it('Check molecules', function () {
-    var molecule = result.molecules[0];
+    let molecule = result.molecules[0];
     expect(molecule.Code).toContain('0100380824');
     expect(molecule.CLogP).toBe(2.7);
     expect(molecule.molfile.split('\n')).toHaveLength(37);
@@ -43,8 +43,8 @@ describe('SDF Parser', function () {
 });
 
 describe('SDF Parser no dynamicTyping', function () {
-  var result = parse(sdf, {
-    dynamicTyping: false
+  let result = parse(sdf, {
+    dynamicTyping: false,
   });
 
   it('Check statistics', function () {
@@ -61,7 +61,7 @@ describe('SDF Parser no dynamicTyping', function () {
   });
 
   it('Check molecules', function () {
-    var molecule = result.molecules[0];
+    let molecule = result.molecules[0];
     expect(typeof molecule.Code).toBe('string');
     expect(typeof molecule.CLogP).toBe('string');
     expect(molecule.CLogP).toBe('2.700000000000000e+000');

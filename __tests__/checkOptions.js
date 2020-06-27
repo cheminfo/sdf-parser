@@ -1,26 +1,26 @@
 'use strict';
 
-var parse = require('..');
+let fs = require('fs');
 
-var fs = require('fs');
+let parse = require('..');
 
-var sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
+let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
 describe('SDF Parser options', function () {
-  var result = parse(sdf, {
+  let result = parse(sdf, {
     exclude: ['Number of H-Donors'],
     include: ['Number of H-Donors', 'CLogP', 'Code'],
     modifiers: {
       CLogP: function (field) {
         return {
           low: field * 1 - 0.2,
-          high: field * 1 + 0.2
+          high: field * 1 + 0.2,
         };
-      }
+      },
     },
     filter: function (entry) {
       return entry.CLogP && entry.CLogP.low > 4;
-    }
+    },
   });
 
   it('Check statistics', function () {
@@ -36,7 +36,7 @@ describe('SDF Parser options', function () {
 
   it('Check molecules', function () {
     expect(result.molecules).toHaveLength(43);
-    var molecule = result.molecules[0];
+    let molecule = result.molecules[0];
 
     expect(Object.keys(molecule)).toHaveLength(3);
     expect(molecule.Code).toBe('0100380851');

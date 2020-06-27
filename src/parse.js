@@ -7,20 +7,20 @@ function parse(sdf, options = {}) {
     filter,
     modifiers = {},
     forEach = {},
-    dynamicTyping = true
+    dynamicTyping = true,
   } = options;
 
   if (typeof sdf !== 'string') {
     throw new TypeError('Parameter "sdf" must be a string');
   }
 
-  var eol = '\n';
+  let eol = '\n';
   if (options.mixedEOL) {
     sdf = sdf.replace(/\r\n/g, '\n');
     sdf = sdf.replace(/\r/g, '\n');
   } else {
     // we will find the delimiter in order to be much faster and not use regular expression
-    var header = sdf.substr(0, 1000);
+    let header = sdf.substr(0, 1000);
     if (header.indexOf('\r\n') > -1) {
       eol = '\r\n';
     } else if (header.indexOf('\r') > -1) {
@@ -28,30 +28,30 @@ function parse(sdf, options = {}) {
     }
   }
 
-  var sdfParts = sdf.split(new RegExp(`${eol}\\$\\$\\$\\$.*${eol}`));
-  var molecules = [];
-  var labels = {};
+  let sdfParts = sdf.split(new RegExp(`${eol}\\$\\$\\$\\$.*${eol}`));
+  let molecules = [];
+  let labels = {};
 
-  var start = Date.now();
+  let start = Date.now();
 
-  for (var i = 0; i < sdfParts.length; i++) {
-    var sdfPart = sdfParts[i];
-    var parts = sdfPart.split(`${eol}>`);
+  for (let i = 0; i < sdfParts.length; i++) {
+    let sdfPart = sdfParts[i];
+    let parts = sdfPart.split(`${eol}>`);
     if (parts.length > 0 && parts[0].length > 5) {
-      var molecule = {};
-      var currentLabels = [];
+      let molecule = {};
+      let currentLabels = [];
       molecule.molfile = parts[0] + eol;
-      for (var j = 1; j < parts.length; j++) {
-        var lines = parts[j].split(eol);
-        var from = lines[0].indexOf('<');
-        var to = lines[0].indexOf('>');
-        var label = lines[0].substring(from + 1, to);
+      for (let j = 1; j < parts.length; j++) {
+        let lines = parts[j].split(eol);
+        let from = lines[0].indexOf('<');
+        let to = lines[0].indexOf('>');
+        let label = lines[0].substring(from + 1, to);
         currentLabels.push(label);
         if (!labels[label]) {
           labels[label] = {
             counter: 0,
             isNumeric: dynamicTyping,
-            keep: false
+            keep: false,
           };
           if (
             (!exclude || exclude.indexOf(label) === -1) &&
@@ -63,7 +63,7 @@ function parse(sdf, options = {}) {
           }
         }
         if (labels[label].keep) {
-          for (var k = 1; k < lines.length - 1; k++) {
+          for (let k = 1; k < lines.length - 1; k++) {
             if (molecule[label]) {
               molecule[label] += eol + lines[k];
             } else {
@@ -71,7 +71,7 @@ function parse(sdf, options = {}) {
             }
           }
           if (labels[label].modifier) {
-            var modifiedValue = labels[label].modifier(molecule[label]);
+            let modifiedValue = labels[label].modifier(molecule[label]);
             if (modifiedValue === undefined || modifiedValue === null) {
               delete molecule[label];
             } else {
@@ -91,23 +91,22 @@ function parse(sdf, options = {}) {
       if (!filter || filter(molecule)) {
         molecules.push(molecule);
         // only now we can increase the counter
-        for (j = 0; j < currentLabels.length; j++) {
-          var currentLabel = currentLabels[j];
-          labels[currentLabel].counter++;
+        for (let j = 0; j < currentLabels.length; j++) {
+          labels[currentLabels[j]].counter++;
         }
       }
     }
   }
 
   // all numeric fields should be converted to numbers
-  for (label in labels) {
-    currentLabel = labels[label];
+  for (let label in labels) {
+    let currentLabel = labels[label];
     if (currentLabel.isNumeric) {
       currentLabel.minValue = Infinity;
       currentLabel.maxValue = -Infinity;
-      for (j = 0; j < molecules.length; j++) {
+      for (let j = 0; j < molecules.length; j++) {
         if (molecules[j][label]) {
-          var value = parseFloat(molecules[j][label]);
+          let value = parseFloat(molecules[j][label]);
           molecules[j][label] = value;
           if (value > currentLabel.maxValue) currentLabel.maxValue = value;
           if (value < currentLabel.minValue) currentLabel.minValue = value;
@@ -117,7 +116,7 @@ function parse(sdf, options = {}) {
   }
 
   // we check that a label is in all the records
-  for (var key in labels) {
+  for (let key in labels) {
     if (labels[key].counter === molecules.length) {
       labels[key].always = true;
     } else {
@@ -125,9 +124,9 @@ function parse(sdf, options = {}) {
     }
   }
 
-  var statistics = [];
-  for (key in labels) {
-    var statistic = labels[key];
+  let statistics = [];
+  for (let key in labels) {
+    let statistic = labels[key];
     statistic.label = key;
     statistics.push(statistic);
   }
@@ -136,7 +135,7 @@ function parse(sdf, options = {}) {
     time: Date.now() - start,
     molecules: molecules,
     labels: Object.keys(labels),
-    statistics: statistics
+    statistics: statistics,
   };
 }
 

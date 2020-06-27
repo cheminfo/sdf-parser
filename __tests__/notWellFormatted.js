@@ -1,16 +1,16 @@
 'use strict';
 
-var parse = require('..');
+let fs = require('fs');
 
-var fs = require('fs');
+let parse = require('..');
 
 describe('SDF Parser of non well formatted file', function () {
-  var sdf = fs.readFileSync(`${__dirname}/test2.sdf`, 'utf-8');
+  let sdf = fs.readFileSync(`${__dirname}/test2.sdf`, 'utf-8');
   sdf = sdf.replace(/\r/g, '');
-  var result = parse(sdf, { mixedEOL: true });
+  let result = parse(sdf, { mixedEOL: true });
 
   it('Check molecules', function () {
-    var molecules = result.molecules;
+    let molecules = result.molecules;
     expect(molecules).toHaveLength(7);
   });
 });

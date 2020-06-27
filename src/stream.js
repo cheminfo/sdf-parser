@@ -2,8 +2,8 @@
 
 const pipeline = require('pumpify');
 const split2 = require('split2');
-const filter = require('through2-filter');
 const through2 = require('through2');
+const filter = require('through2-filter');
 
 const parse = require('./parse');
 
@@ -20,7 +20,7 @@ function entries() {
       const eol = value.includes('\r\n') ? '\r\n' : '\n';
       this.push(`${value + eol}$$$$${eol}`);
       callback();
-    })
+    }),
   );
 }
 
@@ -41,11 +41,11 @@ function molecules(options) {
       } catch (e) {
         callback(e);
       }
-    })
+    }),
   );
 }
 
 module.exports = {
   entries,
-  molecules
+  molecules,
 };
