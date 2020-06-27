@@ -17,10 +17,10 @@ In node script:
 ```js
 // allows to parse a file test.sdf that would be present in the same directory
 
-var parse = require('sdf-parser');
+var parse = require("sdf-parser");
 
-var fs = require('fs');
-var sdf = fs.readFileSync('./test.sdf', 'utf-8');
+var fs = require("fs");
+var sdf = fs.readFileSync("./test.sdf", "utf-8");
 
 var result = parse(sdf);
 console.log(result);
@@ -41,19 +41,19 @@ options:
 
 ```js
 var result = parse(sdf, {
-  exclude: ['Number of H-Donors'],
-  include: ['Number of H-Donors', 'CLogP', 'Code'],
+  exclude: ["Number of H-Donors"],
+  include: ["Number of H-Donors", "CLogP", "Code"],
   modifiers: {
-    CLogP: function(field) {
+    CLogP: function (field) {
       return {
         low: field * 1 - 0.2,
-        high: field * 1 + 0.2
+        high: field * 1 + 0.2,
       };
-    }
+    },
   },
-  filter: function(entry) {
+  filter: function (entry) {
     return entry.CLogP && entry.CLogP.low > 4;
-  }
+  },
 });
 ```
 
@@ -71,10 +71,10 @@ Transform an input text stream to a stream of molecule objects.
 - All other options from the `parse` function.
 
 ```js
-const { stream } = require('sdf-parser');
-fs.createReadStream('test.sdf')
+const { stream } = require("sdf-parser");
+fs.createReadStream("test.sdf")
   .pipe(stream.molecules())
-  .on('data', (molecule) => {
+  .on("data", (molecule) => {
     console.log(molecule.molfile);
   });
 ```
@@ -84,10 +84,10 @@ fs.createReadStream('test.sdf')
 Transform an input text stream to a stream of sdf entries.
 
 ```js
-const { stream } = require('sdf-parser');
-fs.createReadStream('test.sdf')
+const { stream } = require("sdf-parser");
+fs.createReadStream("test.sdf")
   .pipe(stream.entries())
-  .on('data', (entry) => {
+  .on("data", (entry) => {
     // sdf entry as a string
   });
 ```
@@ -98,7 +98,7 @@ fs.createReadStream('test.sdf')
 
 [npm-image]: https://img.shields.io/npm/v/sdf-parser.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/sdf-parser
-[travis-image]: https://img.shields.io/travis/cheminfo-js/sdf-parser/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/cheminfo-js/sdf-parser
+[travis-image]: https://img.shields.io/travis/cheminfo/sdf-parser/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/cheminfo/sdf-parser
 [download-image]: https://img.shields.io/npm/dm/sdf-parser.svg?style=flat-square
 [download-url]: https://www.npmjs.com/package/sdf-parser
