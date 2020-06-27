@@ -1,3 +1,7 @@
+## [4.0.2](https://github.com/cheminfo-js/sdf-parser/compare/v4.0.1...v4.0.2) (2020-06-27)
+
+
+
 ## [4.0.1](https://github.com/cheminfo-js/sdf-parser/compare/v4.0.0...v4.0.1) (2019-06-12)
 
 
