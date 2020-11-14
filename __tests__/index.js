@@ -5,6 +5,7 @@ let fs = require('fs');
 let parse = require('..');
 
 let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
+let sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf-8');
 
 describe('SDF Parser', function () {
   let result = parse(sdf);
@@ -66,5 +67,12 @@ describe('SDF Parser no dynamicTyping', function () {
     expect(typeof molecule.CLogP).toBe('string');
     expect(molecule.CLogP).toBe('2.700000000000000e+000');
     expect(molecule.molfile.split('\n')).toHaveLength(37);
+  });
+});
+
+describe('SDF Parser one molecule', function () {
+  let result = parse(sdf1);
+  it('Check statistics', function () {
+    expect(result.molecules).toHaveLength(1);
   });
 });
