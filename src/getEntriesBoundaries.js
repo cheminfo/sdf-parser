@@ -1,6 +1,6 @@
 'use strict';
 
-function indicesOfSplit(string, substring, eol) {
+function getEntriesBoundaries(string, substring, eol) {
     const res = [];
     let previous = 0;
     let next = 0;
@@ -16,4 +16,4 @@ function indicesOfSplit(string, substring, eol) {
     return res;
 }
 
-module.exports = indicesOfSplit;
+module.exports = getEntriesBoundaries;

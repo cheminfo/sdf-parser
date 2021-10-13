@@ -2,11 +2,11 @@
 
 let fs = require('fs');
 
-let split = require('../src/split');
+let getEntriesBoundaries = require('../src/getEntriesBoundaries');
 
 let sdf0 = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
-let sdf1 = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
-let sdf2 = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
+let sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf-8');
+let sdf2 = fs.readFileSync(`${__dirname}/test2.sdf`, 'utf-8');
 
 [sdf0, sdf1, sdf2].forEach(sdf => {
     let eol = '\n';
@@ -19,6 +19,6 @@ let sdf2 = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
     test('Split should match regex behavior', function () {
         let sdfParts = sdf.split(new RegExp(`${eol}\\$\\$\\$\\$.*${eol}`));
-        expect(sdfParts).toEqual(split(sdf, `${eol}$$$$`, eol).map(v => sdf.substring(...v)));
+        expect(sdfParts).toEqual(getEntriesBoundaries(sdf, `${eol}$$$$`, eol).map(v => sdf.substring(...v)));
     });
 })
