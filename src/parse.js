@@ -1,5 +1,16 @@
-import { getEntriesBoundaries } from './getEntriesBoundaries';
+import { ensureString } from 'ensure-string';
 
+import { getEntriesBoundaries } from './getEntriesBoundaries';
+/**
+ *  Parse a SDF file
+ * @param {string|ArrayBuffer|Uint8Array} sdf SDF file to parse
+ * @param {any} [options={}]
+ * @param {array<string>} [options.include] List of fields to include
+ * @param {array<string>} [options.exclude] List of fields to exclude
+ * @param {boolean} [options.dynamicTyping] Dynamically type the data
+ * @param {object} [options.modifiers] Object containing callbacks to apply on some specific fields
+ * @param {boolean} [options.mixedEOL=false] Set to true if you know there is a mixture between \r\n and \n
+ */
 export function parse(sdf, options = {}) {
   const {
     include,
@@ -10,6 +21,7 @@ export function parse(sdf, options = {}) {
     dynamicTyping = true,
   } = options;
 
+  sdf = ensureString(sdf);
   if (typeof sdf !== 'string') {
     throw new TypeError('Parameter "sdf" must be a string');
   }

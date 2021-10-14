@@ -53,6 +53,7 @@
     "prettier": "^2.4.1"
   },
   "dependencies": {
+    "ensure-string": "^1.1.0",
     "pumpify": "^2.0.1",
     "split2": "^3.2.2",
     "through2": "^4.0.2",
