@@ -1,6 +1,6 @@
 {
   "name": "sdf-parser",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "SDF parser",
   "main": "lib/index.js",
   "module": "src/index.js",

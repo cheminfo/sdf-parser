@@ -1,3 +1,10 @@
+## [5.0.0](https://github.com/cheminfo/sdf-parser/compare/v4.0.2...v5.0.0) (2021-10-14)
+
+
+### Features
+
+* migration to es6-module ([03a6569](https://github.com/cheminfo/sdf-parser/commit/03a6569c95225891eaf0acf91ad6649de8382e17))
+
 ## [4.0.2](https://github.com/cheminfo/sdf-parser/compare/v4.0.1...v4.0.2) (2020-06-27)
 
 ## [4.0.1](https://github.com/cheminfo/sdf-parser/compare/v4.0.0...v4.0.1) (2019-06-12)
