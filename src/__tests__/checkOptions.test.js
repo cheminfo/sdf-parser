@@ -1,29 +1,27 @@
-'use strict';
+import fs from 'fs';
 
-let fs = require('fs');
-
-let parse = require('..');
+import { parse } from '..';
 
 let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
-describe('SDF Parser options', function () {
+describe('SDF Parser options', () => {
   let result = parse(sdf, {
     exclude: ['Number of H-Donors'],
     include: ['Number of H-Donors', 'CLogP', 'Code'],
     modifiers: {
-      CLogP: function (field) {
+      CLogP: (field) => {
         return {
           low: field * 1 - 0.2,
           high: field * 1 + 0.2,
         };
       },
     },
-    filter: function (entry) {
+    filter: (entry) => {
       return entry.CLogP && entry.CLogP.low > 4;
     },
   });
 
-  it('Check statistics', function () {
+  it('Check statistics', () => {
     expect(result.statistics[0].counter).toBe(43);
     expect(result.statistics[0].isNumeric).toBe(false);
     expect(result.statistics[0].label).toBe('Code');
@@ -34,7 +32,7 @@ describe('SDF Parser options', function () {
     expect(result.statistics[4].always).toBe(true);
   });
 
-  it('Check molecules', function () {
+  it('Check molecules', () => {
     expect(result.molecules).toHaveLength(43);
     let molecule = result.molecules[0];
 
@@ -45,14 +43,14 @@ describe('SDF Parser options', function () {
     expect(molecule.molfile.split('\n')).toHaveLength(56);
   });
 
-  it('should throw with non-string argument', function () {
-    expect(function () {
+  it('should throw with non-string argument', () => {
+    expect(() => {
       parse();
     }).toThrow(TypeError);
-    expect(function () {
+    expect(() => {
       parse(42);
     }).toThrow(TypeError);
-    expect(function () {
+    expect(() => {
       parse({});
     }).toThrow(TypeError);
   });

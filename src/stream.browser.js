@@ -1,3 +1,3 @@
-'use strict';
+const empty = {};
 
-module.exports = {};
+export default empty;

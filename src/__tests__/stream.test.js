@@ -1,13 +1,11 @@
-'use strict';
+import fs from 'fs';
 
-const fs = require('fs');
+import callbackStream from 'callback-stream';
+import OCL from 'openchemlib/minimal';
 
-const callbackStream = require('callback-stream');
-const OCL = require('openchemlib/minimal');
+import { entries, molecules } from '..';
 
 const cbStream = callbackStream.bind(null, { objectMode: true });
-
-const { entries, molecules } = require('..').stream;
 
 describe('stream', () => {
   it('entries', () =>
