@@ -1,8 +1,6 @@
-'use strict';
+import fs from 'fs';
 
-let fs = require('fs');
-
-let getEntriesBoundaries = require('../src/getEntriesBoundaries');
+import { getEntriesBoundaries } from '../getEntriesBoundaries';
 
 let sdf0 = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 let sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf-8');
@@ -17,9 +15,9 @@ let sdf2 = fs.readFileSync(`${__dirname}/test2.sdf`, 'utf-8');
     eol = '\r';
   }
 
-  test('Split should match regex behavior', function () {
+  test('Split should match regex behavior', () => {
     let sdfParts = sdf.split(new RegExp(`${eol}\\$\\$\\$\\$.*${eol}`));
-    expect(sdfParts).toEqual(
+    expect(sdfParts).toStrictEqual(
       getEntriesBoundaries(sdf, `${eol}$$$$`, eol).map((v) =>
         sdf.substring(...v),
       ),

@@ -1,8 +1,6 @@
-'use strict';
+import { getEntriesBoundaries } from './getEntriesBoundaries';
 
-const getEntriesBoundaries = require('./getEntriesBoundaries');
-
-function parse(sdf, options = {}) {
+export function parse(sdf, options = {}) {
   const {
     include,
     exclude,
@@ -140,5 +138,3 @@ function parse(sdf, options = {}) {
     statistics: statistics,
   };
 }
-
-module.exports = parse;

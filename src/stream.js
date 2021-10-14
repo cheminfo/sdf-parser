@@ -1,11 +1,9 @@
-'use strict';
+import pipeline from 'pumpify';
+import split2 from 'split2';
+import through2 from 'through2';
+import filter from 'through2-filter';
 
-const pipeline = require('pumpify');
-const split2 = require('split2');
-const through2 = require('through2');
-const filter = require('through2-filter');
-
-const parse = require('./parse');
+import { parse } from './parse';
 
 const filterStream = filter.bind(null, { objectMode: true });
 function filterCb(chunk) {

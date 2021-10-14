@@ -1,6 +1,4 @@
-'use strict';
-
-function getEntriesBoundaries(string, substring, eol) {
+export function getEntriesBoundaries(string, substring, eol) {
   const res = [];
   let previous = 0;
   let next = 0;
@@ -16,5 +14,3 @@ function getEntriesBoundaries(string, substring, eol) {
   }
   return res;
 }
-
-module.exports = getEntriesBoundaries;

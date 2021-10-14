@@ -1,26 +1,24 @@
-'use strict';
+import fs from 'fs';
 
-let fs = require('fs');
-
-let parse = require('..');
+import { parse } from '..';
 
 let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
 
-describe('SDF Parser options and undefined', function () {
+describe('SDF Parser options and undefined', () => {
   let result = parse(sdf, {
     exclude: ['Number of H-Donors'],
     include: ['Number of H-Donors', 'CLogP', 'Code'],
     modifiers: {
-      CLogP: function () {
+      CLogP: () => {
         return undefined;
       },
     },
-    filter: function (entry) {
+    filter: (entry) => {
       return entry.CLogP && entry.CLogP.low > 4;
     },
   });
 
-  it('Check molecules', function () {
+  it('Check molecules', () => {
     expect(result.molecules).toHaveLength(0);
   });
 });

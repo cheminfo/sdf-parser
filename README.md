@@ -17,10 +17,10 @@ In node script:
 ```js
 // allows to parse a file test.sdf that would be present in the same directory
 
-var parse = require("sdf-parser");
+var parse = require('sdf-parser');
 
-var fs = require("fs");
-var sdf = fs.readFileSync("./test.sdf", "utf-8");
+var fs = require('fs');
+var sdf = fs.readFileSync('./test.sdf', 'utf-8');
 
 var result = parse(sdf);
 console.log(result);
@@ -41,8 +41,8 @@ options:
 
 ```js
 var result = parse(sdf, {
-  exclude: ["Number of H-Donors"],
-  include: ["Number of H-Donors", "CLogP", "Code"],
+  exclude: ['Number of H-Donors'],
+  include: ['Number of H-Donors', 'CLogP', 'Code'],
   modifiers: {
     CLogP: function (field) {
       return {
@@ -51,7 +51,7 @@ var result = parse(sdf, {
       };
     },
   },
-  filter: function (entry) {
+  filter: (entry) => {
     return entry.CLogP && entry.CLogP.low > 4;
   },
 });
@@ -71,10 +71,10 @@ Transform an input text stream to a stream of molecule objects.
 - All other options from the `parse` function.
 
 ```js
-const { stream } = require("sdf-parser");
-fs.createReadStream("test.sdf")
+const { stream } = require('sdf-parser');
+fs.createReadStream('test.sdf')
   .pipe(stream.molecules())
-  .on("data", (molecule) => {
+  .on('data', (molecule) => {
     console.log(molecule.molfile);
   });
 ```
@@ -84,10 +84,10 @@ fs.createReadStream("test.sdf")
 Transform an input text stream to a stream of sdf entries.
 
 ```js
-const { stream } = require("sdf-parser");
-fs.createReadStream("test.sdf")
+const { stream } = require('sdf-parser');
+fs.createReadStream('test.sdf')
   .pipe(stream.entries())
-  .on("data", (entry) => {
+  .on('data', (entry) => {
     // sdf entry as a string
   });
 ```
