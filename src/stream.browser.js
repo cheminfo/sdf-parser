@@ -1,1 +1,3 @@
-module.exports = {};
+const empty = {};
+
+export default empty;

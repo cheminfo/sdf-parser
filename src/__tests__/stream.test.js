@@ -3,9 +3,9 @@ import fs from 'fs';
 import callbackStream from 'callback-stream';
 import OCL from 'openchemlib/minimal';
 
-const cbStream = callbackStream.bind(null, { objectMode: true });
+import { entries, molecules } from '..';
 
-const { entries, molecules } = require('..').stream;
+const cbStream = callbackStream.bind(null, { objectMode: true });
 
 describe('stream', () => {
   it('entries', () =>

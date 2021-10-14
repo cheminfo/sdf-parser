@@ -17,7 +17,7 @@ In node script:
 ```js
 // allows to parse a file test.sdf that would be present in the same directory
 
-var parse = require('sdf-parser');
+var { parse } = require('sdf-parser');
 
 var fs = require('fs');
 var sdf = fs.readFileSync('./test.sdf', 'utf-8');

@@ -10,11 +10,11 @@ function filterCb(chunk) {
   return chunk.length > 1 && chunk.trim().length > 1;
 }
 
-function entries() {
+export function entries() {
   return pipeline.obj(
     split2(/\r?\n\${4}.*\r?\n/),
     filterStream(filterCb),
-    through2({ objectMode: true }, function (value, encoding, callback) {
+    through2({ objectMode: true }, function process(value, encoding, callback) {
       const eol = value.includes('\r\n') ? '\r\n' : '\n';
       this.push(`${value + eol}$$$$${eol}`);
       callback();
@@ -22,10 +22,10 @@ function entries() {
   );
 }
 
-function molecules(options) {
+export function molecules(options) {
   return pipeline.obj(
     entries(),
-    through2({ objectMode: true }, function (value, encoding, callback) {
+    through2({ objectMode: true }, function process(value, encoding, callback) {
       try {
         const parsed = parse(value, options);
         if (parsed.molecules.length === 1) {
@@ -42,8 +42,3 @@ function molecules(options) {
     }),
   );
 }
-
-module.exports = {
-  entries,
-  molecules,
-};
