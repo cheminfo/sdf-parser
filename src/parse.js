@@ -1,5 +1,7 @@
 'use strict';
 
+const getEntriesBoundaries = require("./getEntriesBoundaries");
+
 function parse(sdf, options = {}) {
   const {
     include,
@@ -28,14 +30,14 @@ function parse(sdf, options = {}) {
     }
   }
 
-  let sdfParts = sdf.split(new RegExp(`${eol}\\$\\$\\$\\$.*${eol}`));
+  let entriesBoundaries = getEntriesBoundaries(sdf, `${eol}$$$$`, eol);
   let molecules = [];
   let labels = {};
 
   let start = Date.now();
 
-  for (let i = 0; i < sdfParts.length; i++) {
-    let sdfPart = sdfParts[i];
+  for (let i = 0; i < entriesBoundaries.length; i++) {
+    let sdfPart = sdf.substring(...entriesBoundaries[i]);
     let parts = sdfPart.split(`${eol}>`);
     if (parts.length > 0 && parts[0].length > 5) {
       let molecule = {};
