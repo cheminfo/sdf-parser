@@ -1,6 +1,6 @@
 'use strict';
 
-const getEntriesBoundaries = require("./getEntriesBoundaries");
+const getEntriesBoundaries = require('./getEntriesBoundaries');
 
 function parse(sdf, options = {}) {
   const {
