@@ -6,6 +6,7 @@ import filter from 'through2-filter';
 import { parse } from './parse';
 
 const filterStream = filter.bind(null, { objectMode: true });
+
 function filterCb(chunk) {
   return chunk.length > 1 && chunk.trim().length > 1;
 }
