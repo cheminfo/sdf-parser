@@ -1,5 +1,12 @@
 # Changelog
 
+### [5.0.1](https://www.github.com/cheminfo/sdf-parser/compare/v5.0.0...v5.0.1) (2022-03-11)
+
+
+### Bug Fixes
+
+* add sideEffects: false ([512959b](https://www.github.com/cheminfo/sdf-parser/commit/512959b4a567f690070bfd42259ab9812ec8d8b8))
+
 ## [5.0.0](https://github.com/cheminfo/sdf-parser/compare/v4.0.2...v5.0.0) (2021-10-14)
 
 
