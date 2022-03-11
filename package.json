@@ -8,6 +8,7 @@
     "lib",
     "src"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "npm run compile && cheminfo-build --root SDFParser",
     "compile": "rollup -c",
