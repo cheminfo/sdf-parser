@@ -6,8 +6,12 @@ export function getEntriesBoundaries(string, substring, eol) {
     next = string.indexOf(substring, previous);
     if (next !== -1) {
       res.push([previous, next]);
-      previous = next =
-        string.indexOf(eol, next + substring.length) + eol.length;
+      const nextMatch = string.indexOf(eol, next + substring.length);
+      if (nextMatch === -1) {
+        next = -1;
+      } else {
+        next = previous = nextMatch + eol.length;
+      }
     } else {
       res.push([previous, string.length]);
     }
