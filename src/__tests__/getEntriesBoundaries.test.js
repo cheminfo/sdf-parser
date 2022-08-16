@@ -24,3 +24,10 @@ let sdf2 = fs.readFileSync(`${__dirname}/test2.sdf`, 'utf-8');
     );
   });
 });
+
+test('should parse sdf files without EOL in the EOF', () => {
+  const eol = '\n';
+  const sdf = fs.readFileSync(`${__dirname}/test4.sdf`, 'utf-8');
+
+  expect(getEntriesBoundaries(sdf, `${eol}$$$$`, eol)).toMatchSnapshot();
+});
