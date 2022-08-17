@@ -10,7 +10,8 @@ export function getEntriesBoundaries(string, substring, eol) {
       if (nextMatch === -1) {
         next = -1;
       } else {
-        next = previous = nextMatch + eol.length;
+        previous = nextMatch + eol.length;
+        next = previous;
       }
     } else {
       res.push([previous, string.length]);

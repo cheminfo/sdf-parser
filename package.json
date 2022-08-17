@@ -43,18 +43,18 @@
   },
   "homepage": "https://github.com/cheminfo/sdf-parser",
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
     "babel-eslint": "^10.1.0",
     "callback-stream": "^1.1.0",
     "cheminfo-build": "^1.1.11",
-    "eslint": "^8.10.0",
-    "eslint-config-cheminfo": "^7.3.0",
-    "jest": "^27.5.1",
-    "openchemlib": "^7.4.3",
-    "prettier": "^2.5.1"
+    "eslint": "^8.22.0",
+    "eslint-config-cheminfo": "^8.0.2",
+    "jest": "^28.1.3",
+    "openchemlib": "^8.0.1",
+    "prettier": "^2.7.1"
   },
   "dependencies": {
-    "ensure-string": "^1.1.0",
+    "ensure-string": "^1.2.0",
     "pumpify": "^2.0.1",
     "split2": "^4.1.0",
     "through2": "^4.0.2",
