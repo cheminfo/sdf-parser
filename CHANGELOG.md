@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.2](https://github.com/cheminfo/sdf-parser/compare/v5.0.1...v5.0.2) (2022-08-17)
+
+
+### Bug Fixes
+
+* infinite loop with files without EOL in the EOF ([#7](https://github.com/cheminfo/sdf-parser/issues/7)) ([9266761](https://github.com/cheminfo/sdf-parser/commit/9266761dc6f2536ec5deec0bec0d10e277cb2bb0))
+
 ### [5.0.1](https://www.github.com/cheminfo/sdf-parser/compare/v5.0.0...v5.0.1) (2022-03-11)
 
 
