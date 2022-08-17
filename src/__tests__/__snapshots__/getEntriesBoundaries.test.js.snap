@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should parse sdf files without EOL in the EOF 1`] = `
+Array [
+  Array [
+    0,
+    1473,
+  ],
+]
+`;
