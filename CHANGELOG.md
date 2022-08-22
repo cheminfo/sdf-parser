@@ -1,5 +1,17 @@
 # Changelog
 
+## [6.0.0](https://github.com/cheminfo/sdf-parser/compare/v5.0.2...v6.0.0) (2022-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove stream function
+
+### Features
+
+* add iterator to parse huge sdf files ([5c6fc9a](https://github.com/cheminfo/sdf-parser/commit/5c6fc9ae497fde15c7b97aa8c74e9aed5ea768da))
+* remove stream function ([6320c19](https://github.com/cheminfo/sdf-parser/commit/6320c1959092120b19373c36d19c293e53e338bc))
+
 ## [5.0.2](https://github.com/cheminfo/sdf-parser/compare/v5.0.1...v5.0.2) (2022-08-17)
 
 
