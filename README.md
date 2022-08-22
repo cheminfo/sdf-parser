@@ -77,7 +77,7 @@ for await (const entry of iterator(stream)) {
 
 [npm-image]: https://img.shields.io/npm/v/sdf-parser.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/sdf-parser
-[travis-image]: https://img.shields.io/travis/cheminfo/sdf-parser/master.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/cheminfo/sdf-parser/main.svg?style=flat-square
 [travis-url]: https://travis-ci.org/cheminfo/sdf-parser
 [download-image]: https://img.shields.io/npm/dm/sdf-parser.svg?style=flat-square
 [download-url]: https://www.npmjs.com/package/sdf-parser
