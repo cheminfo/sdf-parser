@@ -1,46 +1,51 @@
 import { ensureString } from 'ensure-string';
 
 import { getEntriesBoundaries } from './getEntriesBoundaries';
+import { getMolecule } from './util/getMolecule';
 /**
  *  Parse a SDF file
  * @param {string|ArrayBuffer|Uint8Array} sdf SDF file to parse
- * @param {any} [options={}]
- * @param {array<string>} [options.include] List of fields to include
- * @param {array<string>} [options.exclude] List of fields to exclude
+ * @param {object} [options={}]
+ * @param {string[]} [options.include] List of fields to include
+ * @param {string[]} [options.exclude] List of fields to exclude
+ * @param {Function} [options.filter] Callback allowing to filter the molecules
  * @param {boolean} [options.dynamicTyping] Dynamically type the data
  * @param {object} [options.modifiers] Object containing callbacks to apply on some specific fields
  * @param {boolean} [options.mixedEOL=false] Set to true if you know there is a mixture between \r\n and \n
+ * @param {string} [options.eol] Specify the end of line character. Default will be the one found in the file
  */
 export function parse(sdf, options = {}) {
-  const {
-    include,
-    exclude,
-    filter,
-    modifiers = {},
-    forEach = {},
-    dynamicTyping = true,
-  } = options;
+  options = { ...options };
+  if (options.modifiers === undefined) options.modifiers = {};
+  if (options.forEach === undefined) options.forEach = {};
+  if (options.dynamicTyping === undefined) options.dynamicTyping = true;
 
   sdf = ensureString(sdf);
   if (typeof sdf !== 'string') {
     throw new TypeError('Parameter "sdf" must be a string');
   }
 
-  let eol = '\n';
-  if (options.mixedEOL) {
-    sdf = sdf.replace(/\r\n/g, '\n');
-    sdf = sdf.replace(/\r/g, '\n');
-  } else {
-    // we will find the delimiter in order to be much faster and not use regular expression
-    let header = sdf.substr(0, 1000);
-    if (header.indexOf('\r\n') > -1) {
-      eol = '\r\n';
-    } else if (header.indexOf('\r') > -1) {
-      eol = '\r';
+  if (options.eol === undefined) {
+    options.eol = '\n';
+    if (options.mixedEOL) {
+      sdf = sdf.replace(/\r\n/g, '\n');
+      sdf = sdf.replace(/\r/g, '\n');
+    } else {
+      // we will find the delimiter in order to be much faster and not use regular expression
+      let header = sdf.substr(0, 1000);
+      if (header.indexOf('\r\n') > -1) {
+        options.eol = '\r\n';
+      } else if (header.indexOf('\r') > -1) {
+        options.eol = '\r';
+      }
     }
   }
 
-  let entriesBoundaries = getEntriesBoundaries(sdf, `${eol}$$$$`, eol);
+  let entriesBoundaries = getEntriesBoundaries(
+    sdf,
+    `${options.eol}$$$$`,
+    options.eol,
+  );
   let molecules = [];
   let labels = {};
 
@@ -48,72 +53,18 @@ export function parse(sdf, options = {}) {
 
   for (let i = 0; i < entriesBoundaries.length; i++) {
     let sdfPart = sdf.substring(...entriesBoundaries[i]);
-    let parts = sdfPart.split(`${eol}>`);
-    if (parts.length > 0 && parts[0].length > 5) {
-      let molecule = {};
-      let currentLabels = [];
-      molecule.molfile = parts[0] + eol;
-      for (let j = 1; j < parts.length; j++) {
-        let lines = parts[j].split(eol);
-        let from = lines[0].indexOf('<');
-        let to = lines[0].indexOf('>');
-        let label = lines[0].substring(from + 1, to);
-        currentLabels.push(label);
-        if (!labels[label]) {
-          labels[label] = {
-            counter: 0,
-            isNumeric: dynamicTyping,
-            keep: false,
-          };
-          if (
-            (!exclude || exclude.indexOf(label) === -1) &&
-            (!include || include.indexOf(label) > -1)
-          ) {
-            labels[label].keep = true;
-            if (modifiers[label]) {
-              labels[label].modifier = modifiers[label];
-            }
-            if (forEach[label]) {
-              labels[label].forEach = forEach[label];
-            }
-          }
-        }
-        if (labels[label].keep) {
-          for (let k = 1; k < lines.length - 1; k++) {
-            if (molecule[label]) {
-              molecule[label] += eol + lines[k];
-            } else {
-              molecule[label] = lines[k];
-            }
-          }
-          if (labels[label].modifier) {
-            let modifiedValue = labels[label].modifier(molecule[label]);
-            if (modifiedValue === undefined || modifiedValue === null) {
-              delete molecule[label];
-            } else {
-              molecule[label] = modifiedValue;
-            }
-          }
-          if (labels[label].isNumeric) {
-            if (
-              !isFinite(molecule[label]) ||
-              molecule[label].match(/^0[0-9]/)
-            ) {
-              labels[label].isNumeric = false;
-            }
-          }
-        }
-      }
-      if (!filter || filter(molecule)) {
-        molecules.push(molecule);
-        // only now we can increase the counter
-        for (let j = 0; j < currentLabels.length; j++) {
-          labels[currentLabels[j]].counter++;
-        }
+    let parts = sdfPart.split(`${options.eol}>`);
+    if (parts.length === 0 || parts[0].length <= 5) continue;
+    let currentLabels = [];
+    const molecule = getMolecule(parts, labels, currentLabels, options);
+    if (!options.filter || options.filter(molecule)) {
+      molecules.push(molecule);
+      // only now we can increase the counter
+      for (let j = 0; j < currentLabels.length; j++) {
+        labels[currentLabels[j]].counter++;
       }
     }
   }
-
   // all numeric fields should be converted to numbers
   for (let label in labels) {
     let currentLabel = labels[label];
