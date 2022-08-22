@@ -57,39 +57,18 @@ var result = parse(sdf, {
 });
 ```
 
-## Streams
+## Iterator
 
 This API is only available on Node.js.
 
-### molecules(options)
-
-Transform an input text stream to a stream of molecule objects.
-
-#### options
-
-- `fullResult`: true to emit the full result of `parse` instead of just the molecules.
-- All other options from the `parse` function.
-
 ```js
-const { stream } = require('sdf-parser');
-fs.createReadStream('test.sdf')
-  .pipe(stream.molecules())
-  .on('data', (molecule) => {
-    console.log(molecule.molfile);
-  });
-```
-
-### entries()
-
-Transform an input text stream to a stream of sdf entries.
-
-```js
-const { stream } = require('sdf-parser');
-fs.createReadStream('test.sdf')
-  .pipe(stream.entries())
-  .on('data', (entry) => {
-    // sdf entry as a string
-  });
+const { iterator } = require('sdf-parser');
+const readStream = createReadStream(join(__dirname, 'test.sdf.gz'));
+const stream = readStream.pipe(createGunzip());
+const results = [];
+for await (const entry of iterator(stream)) {
+  results.push(entry);
+}
 ```
 
 ## License

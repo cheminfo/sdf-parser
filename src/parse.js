@@ -53,10 +53,10 @@ export function parse(sdf, options = {}) {
 
   for (let i = 0; i < entriesBoundaries.length; i++) {
     let sdfPart = sdf.substring(...entriesBoundaries[i]);
-    let parts = sdfPart.split(`${options.eol}>`);
-    if (parts.length === 0 || parts[0].length <= 5) continue;
+
     let currentLabels = [];
-    const molecule = getMolecule(parts, labels, currentLabels, options);
+    const molecule = getMolecule(sdfPart, labels, currentLabels, options);
+    if (!molecule) continue;
     if (!options.filter || options.filter(molecule)) {
       molecules.push(molecule);
       // only now we can increase the counter

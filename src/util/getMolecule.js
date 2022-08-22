@@ -1,4 +1,6 @@
-export function getMolecule(parts, labels, currentLabels, options) {
+export function getMolecule(sdfPart, labels, currentLabels, options) {
+  let parts = sdfPart.split(`${options.eol}>`);
+  if (parts.length === 0 || parts[0].length <= 5) return;
   let molecule = {};
   molecule.molfile = parts[0] + options.eol;
   for (let j = 1; j < parts.length; j++) {

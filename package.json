@@ -55,10 +55,7 @@
     "prettier": "^2.7.1"
   },
   "dependencies": {
-    "ensure-string": "^1.2.0",
-    "pumpify": "^2.0.1",
-    "split2": "^4.1.0",
-    "through2": "^4.0.2",
-    "through2-filter": "^3.0.0"
+    "dynamic-typing": "^1.0.0",
+    "ensure-string": "^1.2.0"
   }
 }
