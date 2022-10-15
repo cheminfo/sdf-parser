@@ -1,22 +1,23 @@
-import { createReadStream } from 'fs';
+import { createReadStream, ReadStream } from 'fs';
 import { join } from 'path';
 import { createGunzip } from 'zlib';
 
-import { fileListFromPath } from 'filelist-utils';
+import { fileCollectionFromPath } from 'filelist-utils';
 
 import { iterator } from '../iterator';
 
 test('iterator', async () => {
-  const fileList = (await fileListFromPath(join(__dirname, '.'))).filter(
-    (file) => file.name === 'test.sdf',
-  );
+  const files = (
+    await fileCollectionFromPath(join(__dirname, '.'))
+  ).files.filter((file) => file.name === 'test.sdf');
   const results = [];
-  for await (const entry of iterator(fileList[0].stream())) {
+
+  for await (const entry of iterator(ReadStream.fromWeb(files[0].stream()))) {
     results.push(entry);
   }
   expect(results).toHaveLength(128);
   expect(results[0]).toMatchInlineSnapshot(`
-    Object {
+    {
       "CLogP": 2.7,
       "Code": 100380824,
       "Number of H-Acceptors": 3,
@@ -72,7 +73,7 @@ test('iterator on stream', async () => {
   }
   expect(results).toHaveLength(128);
   expect(results[0]).toMatchInlineSnapshot(`
-    Object {
+    {
       "CLogP": 2.7,
       "Code": 100380824,
       "Number of H-Acceptors": 3,
@@ -119,18 +120,18 @@ test('iterator on stream', async () => {
   `);
 });
 
-test('iterator on filelist stream', async () => {
-  const file = (await fileListFromPath(join(__dirname, '.'))).filter(
+test('iterator on fileCollection stream', async () => {
+  const file = (await fileCollectionFromPath(join(__dirname, '.'))).filter(
     (file) => file.size === 32233,
-  )[0];
+  ).files[0];
   const results = [];
 
-  for await (const entry of iterator(file.stream())) {
+  for await (const entry of iterator(ReadStream.fromWeb(file.stream()))) {
     results.push(entry);
   }
   expect(results).toHaveLength(128);
   expect(results[0]).toMatchInlineSnapshot(`
-    Object {
+    {
       "CLogP": 2.7,
       "Code": 100380824,
       "Number of H-Acceptors": 3,

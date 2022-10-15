@@ -3,7 +3,7 @@ import { createInterface } from 'readline';
 import { parseString } from 'dynamic-typing';
 /**
  *  Parse a SDF file
- * @param {string|ArrayBuffer|Uint8Array} sdf SDF file to parse
+ * @param {NodeJS.ReadableStream} readStream SDF file to parse
  * @param {object} [options={}]
  * @param {Function} [options.filter] Callback allowing to filter the molecules
  * @param {boolean} [options.dynamicTyping] Dynamically type the data
