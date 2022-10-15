@@ -12,11 +12,12 @@ test('iterator', async () => {
   ).files.filter((file) => file.name === 'test.sdf');
   const results = [];
 
-  for await (const entry of iterator(ReadStream.fromWeb(files[0].stream()))) {
-    results.push(entry);
-  }
-  expect(results).toHaveLength(128);
-  expect(results[0]).toMatchInlineSnapshot(`
+  if (parseInt(process.versions.node) >= 18) {
+    for await (const entry of iterator(ReadStream.fromWeb(files[0].stream()))) {
+      results.push(entry);
+    }
+    expect(results).toHaveLength(128);
+    expect(results[0]).toMatchInlineSnapshot(`
     {
       "CLogP": 2.7,
       "Code": 100380824,
@@ -62,6 +63,7 @@ test('iterator', async () => {
     ",
     }
   `);
+  }
 });
 
 test('iterator on stream', async () => {
@@ -126,11 +128,12 @@ test('iterator on fileCollection stream', async () => {
   ).files[0];
   const results = [];
 
-  for await (const entry of iterator(ReadStream.fromWeb(file.stream()))) {
-    results.push(entry);
-  }
-  expect(results).toHaveLength(128);
-  expect(results[0]).toMatchInlineSnapshot(`
+  if (parseInt(process.versions.node) >= 18) {
+    for await (const entry of iterator(ReadStream.fromWeb(file.stream()))) {
+      results.push(entry);
+    }
+    expect(results).toHaveLength(128);
+    expect(results[0]).toMatchInlineSnapshot(`
     {
       "CLogP": 2.7,
       "Code": 100380824,
@@ -176,4 +179,5 @@ test('iterator on fileCollection stream', async () => {
     ",
     }
   `);
+  }
 });
