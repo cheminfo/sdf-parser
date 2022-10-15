@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.1](https://github.com/cheminfo/sdf-parser/compare/v6.0.0...v6.0.1) (2022-10-15)
+
+
+### Bug Fixes
+
+* update dependencies and remove iterator from browser ([f3275be](https://github.com/cheminfo/sdf-parser/commit/f3275bea7f78a744ca8b0b1918c1ef59720342a8))
+
 ## [6.0.0](https://github.com/cheminfo/sdf-parser/compare/v5.0.2...v6.0.0) (2022-08-22)
 
 
