@@ -12,7 +12,7 @@ test('iterator', async () => {
   ).files.filter((file) => file.name === 'test.sdf');
   const results = [];
 
-  if (parseInt(process.versions.node) >= 18) {
+  if (parseInt(process.versions.node, 10) >= 18) {
     for await (const entry of iterator(ReadStream.fromWeb(files[0].stream()))) {
       results.push(entry);
     }
@@ -128,7 +128,7 @@ test('iterator on fileCollection stream', async () => {
   ).files[0];
   const results = [];
 
-  if (parseInt(process.versions.node) >= 18) {
+  if (parseInt(process.versions.node, 10) >= 18) {
     for await (const entry of iterator(ReadStream.fromWeb(file.stream()))) {
       results.push(entry);
     }
