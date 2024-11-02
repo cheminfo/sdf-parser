@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import { test, expect } from 'vitest';
+
 import { getEntriesBoundaries } from '../getEntriesBoundaries';
 
 let sdf0 = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');

@@ -3,6 +3,7 @@ import { join } from 'path';
 import { createGunzip } from 'zlib';
 
 import { fileCollectionFromPath } from 'filelist-utils';
+import { test, expect } from 'vitest';
 
 import { iterator } from '../iterator';
 

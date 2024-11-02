@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import { describe, it, expect } from 'vitest';
+
 import { parse } from '..';
 
 describe('SDF Parser of non well formatted file', () => {

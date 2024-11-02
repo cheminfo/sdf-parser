@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import { describe, it, expect } from 'vitest';
+
 import { parse } from '..';
 
 let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
