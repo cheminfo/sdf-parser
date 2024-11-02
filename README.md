@@ -59,13 +59,19 @@ var result = parse(sdf, {
 
 ## Iterator
 
-This API is only available on Node.js.
-
 ```js
 const { iterator } = require('sdf-parser');
-const readStream = createReadStream(join(__dirname, 'test.sdf.gz'));
-const stream = readStream.pipe(createGunzip());
+const file = await openAsBlob(join(__dirname, 'test.sdf.gz'));
+
+const decompressionStream = new DecompressionStream('gzip');
+const textDecoder = new TextDecoderStream();
+
+const stream = file
+  .stream()
+  .pipeThrough(decompressionStream)
+  .pipeThrough(textDecoder);
 const results = [];
+
 for await (const entry of iterator(stream)) {
   results.push(entry);
 }

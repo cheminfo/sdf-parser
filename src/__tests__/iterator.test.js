@@ -1,6 +1,5 @@
-import { createReadStream, ReadStream } from 'fs';
+import { openAsBlob } from 'fs';
 import { join } from 'path';
-import { createGunzip } from 'zlib';
 
 import { fileCollectionFromPath } from 'filelist-utils';
 import { test, expect } from 'vitest';
@@ -13,12 +12,15 @@ test('iterator', async () => {
   ).files.filter((file) => file.name === 'test.sdf');
   const results = [];
 
-  if (parseInt(process.versions.node, 10) >= 18) {
-    for await (const entry of iterator(ReadStream.fromWeb(files[0].stream()))) {
-      results.push(entry);
-    }
-    expect(results).toHaveLength(128);
-    expect(results[0]).toMatchInlineSnapshot(`
+  const textDecoder = new TextDecoderStream();
+  for await (const entry of iterator(
+    files[0].stream().pipeThrough(textDecoder),
+  )) {
+    results.push(entry);
+  }
+
+  expect(results).toHaveLength(128);
+  expect(results[0]).toMatchInlineSnapshot(`
     {
       "CLogP": 2.7,
       "Code": 100380824,
@@ -64,16 +66,24 @@ test('iterator', async () => {
     ",
     }
   `);
-  }
 });
 
 test('iterator on stream', async () => {
-  const readStream = createReadStream(join(__dirname, 'test.sdf.gz'));
-  const stream = readStream.pipe(createGunzip());
+  const file = await openAsBlob(join(__dirname, 'test.sdf.gz'));
+
+  const decompressionStream = new DecompressionStream('gzip');
+  const textDecoder = new TextDecoderStream();
+
+  const stream = file
+    .stream()
+    .pipeThrough(decompressionStream)
+    .pipeThrough(textDecoder);
   const results = [];
+
   for await (const entry of iterator(stream)) {
     results.push(entry);
   }
+
   expect(results).toHaveLength(128);
   expect(results[0]).toMatchInlineSnapshot(`
     {
@@ -129,12 +139,12 @@ test('iterator on fileCollection stream', async () => {
   ).files[0];
   const results = [];
 
-  if (parseInt(process.versions.node, 10) >= 18) {
-    for await (const entry of iterator(ReadStream.fromWeb(file.stream()))) {
-      results.push(entry);
-    }
-    expect(results).toHaveLength(128);
-    expect(results[0]).toMatchInlineSnapshot(`
+  const textDecoder = new TextDecoderStream();
+  for await (const entry of iterator(file.stream().pipeThrough(textDecoder))) {
+    results.push(entry);
+  }
+  expect(results).toHaveLength(128);
+  expect(results[0]).toMatchInlineSnapshot(`
     {
       "CLogP": 2.7,
       "Code": 100380824,
@@ -180,5 +190,4 @@ test('iterator on fileCollection stream', async () => {
     ",
     }
   `);
-  }
 });
