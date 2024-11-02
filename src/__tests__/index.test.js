@@ -1,11 +1,11 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 import { describe, it, expect } from 'vitest';
 
 import { parse } from '..';
 
-let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf-8');
-let sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf-8');
+let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
+let sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf8');
 
 describe('SDF Parser', () => {
   let result = parse(sdf);

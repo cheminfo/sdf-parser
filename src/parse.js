@@ -4,15 +4,15 @@ import { getEntriesBoundaries } from './getEntriesBoundaries';
 import { getMolecule } from './util/getMolecule';
 /**
  *  Parse a SDF file
- * @param {string|ArrayBuffer|Uint8Array} sdf SDF file to parse
+ * @param {string|ArrayBuffer|Uint8Array} sdf - SDF file to parse
  * @param {object} [options={}]
- * @param {string[]} [options.include] List of fields to include
- * @param {string[]} [options.exclude] List of fields to exclude
- * @param {Function} [options.filter] Callback allowing to filter the molecules
- * @param {boolean} [options.dynamicTyping] Dynamically type the data
- * @param {object} [options.modifiers] Object containing callbacks to apply on some specific fields
- * @param {boolean} [options.mixedEOL=false] Set to true if you know there is a mixture between \r\n and \n
- * @param {string} [options.eol] Specify the end of line character. Default will be the one found in the file
+ * @param {string[]} [options.include] - List of fields to include
+ * @param {string[]} [options.exclude] - List of fields to exclude
+ * @param {Function} [options.filter] - Callback allowing to filter the molecules
+ * @param {boolean} [options.dynamicTyping] - Dynamically type the data
+ * @param {object} [options.modifiers] - Object containing callbacks to apply on some specific fields
+ * @param {boolean} [options.mixedEOL=false] - Set to true if you know there is a mixture between \r\n and \n
+ * @param {string} [options.eol] - Specify the end of line character. Default will be the one found in the file
  */
 export function parse(sdf, options = {}) {
   options = { ...options };
@@ -28,14 +28,14 @@ export function parse(sdf, options = {}) {
   if (options.eol === undefined) {
     options.eol = '\n';
     if (options.mixedEOL) {
-      sdf = sdf.replace(/\r\n/g, '\n');
-      sdf = sdf.replace(/\r/g, '\n');
+      sdf = sdf.replaceAll('\r\n', '\n');
+      sdf = sdf.replaceAll('\r', '\n');
     } else {
       // we will find the delimiter in order to be much faster and not use regular expression
-      let header = sdf.substr(0, 1000);
-      if (header.indexOf('\r\n') > -1) {
+      let header = new Set(sdf.slice(0, 1000));
+      if (header.has('\r\n')) {
         options.eol = '\r\n';
-      } else if (header.indexOf('\r') > -1) {
+      } else if (header.has('\r')) {
         options.eol = '\r';
       }
     }
@@ -52,7 +52,7 @@ export function parse(sdf, options = {}) {
   let start = Date.now();
 
   for (let i = 0; i < entriesBoundaries.length; i++) {
-    let sdfPart = sdf.substring(...entriesBoundaries[i]);
+    let sdfPart = sdf.slice(...entriesBoundaries[i]);
 
     let currentLabels = [];
     const molecule = getMolecule(sdfPart, labels, currentLabels, options);
@@ -73,7 +73,7 @@ export function parse(sdf, options = {}) {
       currentLabel.maxValue = -Infinity;
       for (let j = 0; j < molecules.length; j++) {
         if (molecules[j][label]) {
-          let value = parseFloat(molecules[j][label]);
+          let value = Number.parseFloat(molecules[j][label]);
           molecules[j][label] = value;
           if (value > currentLabel.maxValue) {
             currentLabel.maxValue = value;

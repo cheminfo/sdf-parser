@@ -7,7 +7,7 @@ export function getMolecule(sdfPart, labels, currentLabels, options) {
     let lines = parts[j].split(options.eol);
     let from = lines[0].indexOf('<');
     let to = lines[0].indexOf('>');
-    let label = lines[0].substring(from + 1, to);
+    let label = lines[0].slice(from + 1, to);
     currentLabels.push(label);
     if (!labels[label]) {
       labels[label] = {
@@ -16,8 +16,8 @@ export function getMolecule(sdfPart, labels, currentLabels, options) {
         keep: false,
       };
       if (
-        (!options.exclude || options.exclude.indexOf(label) === -1) &&
-        (!options.include || options.include.indexOf(label) > -1)
+        (!options.exclude || !options.exclude.includes(label)) &&
+        (!options.include || options.include.includes(label))
       ) {
         labels[label].keep = true;
         if (options.modifiers[label]) {
@@ -44,10 +44,11 @@ export function getMolecule(sdfPart, labels, currentLabels, options) {
           molecule[label] = modifiedValue;
         }
       }
-      if (labels[label].isNumeric) {
-        if (!isFinite(molecule[label]) || molecule[label].match(/^0[0-9]/)) {
-          labels[label].isNumeric = false;
-        }
+      if (
+        labels[label].isNumeric &&
+        (!Number.isFinite(+molecule[label]) || molecule[label].match(/^0[0-9]/))
+      ) {
+        labels[label].isNumeric = false;
       }
     }
   }
