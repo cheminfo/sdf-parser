@@ -65,7 +65,7 @@ test('iterator', async () => {
   `);
 });
 
-test('iterator on stream', async () => {
+test.skipIf(process.version.startsWith('v18'))('iterator on stream', async () => {
   const file = await openAsBlob(join(__dirname, 'test.sdf.gz'));
 
   const decompressionStream = new DecompressionStream('gzip');
