@@ -2,11 +2,11 @@ import { parseString } from 'dynamic-typing';
 
 /**
  *  Parse a SDF file
- * @param {ReadableStream} readStream SDF file to parse
+ * @param {ReadableStream} readStream - SDF file to parse
  * @param {object} [options={}]
- * @param {Function} [options.filter] Callback allowing to filter the molecules
- * @param {string} [options.eol='\n'] End of line character
- * @param {boolean} [options.dynamicTyping] Dynamically type the data
+ * @param {Function} [options.filter] - Callback allowing to filter the molecules
+ * @param {string} [options.eol='\n'] - End of line character
+ * @param {boolean} [options.dynamicTyping] - Dynamically type the data
  */
 export async function* iterator(readStream, options = {}) {
   const { eol = '\n', dynamicTyping = true } = options;
@@ -49,7 +49,7 @@ function getMolecule(sdfPart, options) {
     let lines = parts[j].split(eol);
     let from = lines[0].indexOf('<');
     let to = lines[0].indexOf('>');
-    let label = lines[0].substring(from + 1, to);
+    let label = lines[0].slice(from + 1, to);
     for (let k = 1; k < lines.length - 1; k++) {
       if (molecule[label]) {
         molecule[label] += eol + lines[k];
@@ -73,7 +73,7 @@ function createLineStream() {
       for (let i = 0; i < lines.length - 1; i++) {
         controller.enqueue(lines[i]);
       }
-      buffer = lines[lines.length - 1];
+      buffer = lines.at(-1);
     },
     flush(controller) {
       if (buffer) controller.enqueue(buffer);

@@ -1,5 +1,5 @@
-import { openAsBlob } from 'fs';
-import { join } from 'path';
+import { openAsBlob } from 'node:fs';
+import { join } from 'node:path';
 
 import { fileCollectionFromPath } from 'filelist-utils';
 import { test, expect } from 'vitest';
@@ -7,14 +7,15 @@ import { test, expect } from 'vitest';
 import { iterator } from '../iterator';
 
 test('iterator', async () => {
-  const files = (
-    await fileCollectionFromPath(join(__dirname, '.'))
-  ).files.filter((file) => file.name === 'test.sdf');
+  const fileCollection = await fileCollectionFromPath(join(__dirname, '.'))
+  const file = (
+    fileCollection
+  ).files.find((f) => f.name === 'test.sdf');
   const results = [];
 
   const textDecoder = new TextDecoderStream();
   for await (const entry of iterator(
-    files[0].stream().pipeThrough(textDecoder),
+    file.stream().pipeThrough(textDecoder),
   )) {
     results.push(entry);
   }
@@ -134,7 +135,8 @@ test('iterator on stream', async () => {
 });
 
 test('iterator on fileCollection stream', async () => {
-  const file = (await fileCollectionFromPath(join(__dirname, '.'))).filter(
+  const fileCollection = await fileCollectionFromPath(join(__dirname, '.'))
+  const file = (fileCollection).filter(
     (file) => file.size === 32233,
   ).files[0];
   const results = [];
