@@ -1,5 +1,21 @@
 # Changelog
 
+## [7.0.0](https://github.com/cheminfo/sdf-parser/compare/v6.0.1...v7.0.0) (2024-11-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* The stream should be piped through a TextDecoderStream like for example: const textDecoder = new TextDecoderStream(); for await (const entry of   iterator(file.stream().pipeThrough(textDecoder)))
+
+### Features
+
+* update iterator implementation for browser compatibility ([6a53960](https://github.com/cheminfo/sdf-parser/commit/6a539603d0a3e15e3f902412fea2aabf49d7ffce))
+
+
+### Bug Fixes
+
+* remove side effect on options ([2afdfc8](https://github.com/cheminfo/sdf-parser/commit/2afdfc8e4818d2b587ce2e53c67add726953684a))
+
 ## [6.0.1](https://github.com/cheminfo/sdf-parser/compare/v6.0.0...v6.0.1) (2022-10-15)
 
 
