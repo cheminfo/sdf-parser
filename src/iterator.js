@@ -13,7 +13,6 @@ export async function* iterator(readStream, options = {}) {
 
   const lineStream = readStream.pipeThrough(createLineStream());
   const currentLines = [];
-  if (options.dynamicTyping === undefined) options.dynamicTyping = true;
 
   for await (let line of lineStream) {
     if (line.startsWith('$$$$')) {
