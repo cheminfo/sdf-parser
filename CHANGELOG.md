@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.1](https://github.com/cheminfo/sdf-parser/compare/v7.0.0...v7.0.1) (2025-02-27)
+
+
+### Bug Fixes
+
+* wrong file extension and CDN publication ([bcb7572](https://github.com/cheminfo/sdf-parser/commit/bcb7572bdd2ad028566ca07ba1c699ebfc19cdf5))
+
 ## [7.0.0](https://github.com/cheminfo/sdf-parser/compare/v6.0.1...v7.0.0) (2025-02-27)
 
 
