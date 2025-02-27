@@ -1,5 +1,7 @@
 import { parseString } from 'dynamic-typing';
 
+import { MolfileStream } from './MolfileStream.ts';
+
 /**
  *  Parse a SDF file
  * @param {ReadableStream} readStream - SDF file to parse
@@ -7,25 +9,20 @@ import { parseString } from 'dynamic-typing';
  * @param {Function} [options.filter] - Callback allowing to filter the molecules
  * @param {string} [options.eol='\n'] - End of line character
  * @param {boolean} [options.dynamicTyping] - Dynamically type the data
+ * @yields {object} - Molecule object
  */
 export async function* iterator(readStream, options = {}) {
   const { eol = '\n', dynamicTyping = true } = options;
 
-  const lineStream = readStream.pipeThrough(createLineStream());
-  const currentLines = [];
-
-  for await (let line of lineStream) {
-    if (line.startsWith('$$$$')) {
-      const molecule = getMolecule(currentLines.join(eol), {
-        eol,
-        dynamicTyping,
-      });
-      if (!options.filter || options.filter(molecule)) {
-        yield molecule;
-      }
-      currentLines.length = 0;
-    } else {
-      currentLines.push(line);
+  const moleculeStream = readStream.pipeThrough(new MolfileStream());
+  for await (const molfile of moleculeStream) {
+    if (molfile.length < 20) continue;
+    const molecule = getMolecule(molfile, {
+      eol,
+      dynamicTyping,
+    });
+    if (!options.filter || options.filter(molecule)) {
+      yield molecule;
     }
   }
 }
@@ -61,21 +58,4 @@ function getMolecule(sdfPart, options) {
     }
   }
   return molecule;
-}
-
-function createLineStream() {
-  let buffer = '';
-  return new TransformStream({
-    async transform(chunk, controller) {
-      buffer += chunk;
-      let lines = buffer.split('\n');
-      for (let i = 0; i < lines.length - 1; i++) {
-        controller.enqueue(lines[i]);
-      }
-      buffer = lines.at(-1);
-    },
-    flush(controller) {
-      if (buffer) controller.enqueue(buffer);
-    },
-  });
 }
