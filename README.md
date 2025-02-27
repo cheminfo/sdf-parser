@@ -1,7 +1,8 @@
 # sdf-parser
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][ci-image]][ci-url]
+[![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
 Allow to parse a SDF file and convert it to an array of objects.
@@ -83,7 +84,9 @@ for await (const entry of iterator(stream)) {
 
 [npm-image]: https://img.shields.io/npm/v/sdf-parser.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/sdf-parser
-[travis-image]: https://img.shields.io/travis/cheminfo/sdf-parser/main.svg?style=flat-square
-[travis-url]: https://travis-ci.org/cheminfo/sdf-parser
+[ci-image]: https://github.com/cheminfo/sdf-parser/actions/workflows/nodejs.yml/badge.svg
+[ci-url]: https://github.com/cheminfo/sdf-parser/actions/workflows/nodejs.yml
+[codecov-image]: https://img.shields.io/codecov/c/github/cheminfo/sdf-parser.svg
+[codecov-url]: https://codecov.io/gh/cheminfo/sdf-parser
 [download-image]: https://img.shields.io/npm/dm/sdf-parser.svg?style=flat-square
 [download-url]: https://www.npmjs.com/package/sdf-parser
