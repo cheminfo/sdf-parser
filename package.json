@@ -47,13 +47,13 @@
     "cheminfo-build": "^1.2.1",
     "eslint": "^9.21.0",
     "eslint-config-cheminfo": "^13.0.0",
+    "file-collection": "^1.0.0",
     "openchemlib": "^8.18.1",
     "prettier": "^3.5.2",
     "vitest": "^3.0.7"
   },
   "dependencies": {
     "dynamic-typing": "^1.0.1",
-    "ensure-string": "^1.2.0",
-    "file-collection": "^1.0.0"
+    "ensure-string": "^1.2.0"
   }
 }
