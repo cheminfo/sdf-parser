@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.2](https://github.com/cheminfo/sdf-parser/compare/v7.0.1...v7.0.2) (2025-02-27)
+
+
+### Bug Fixes
+
+* extension of rollup.config ([6512f04](https://github.com/cheminfo/sdf-parser/commit/6512f0491b0582cd09be3917523c45d44615d021))
+
 ## [7.0.1](https://github.com/cheminfo/sdf-parser/compare/v7.0.0...v7.0.1) (2025-02-27)
 
 
