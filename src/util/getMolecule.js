@@ -1,3 +1,11 @@
+/**
+ * Parse the molfile and the properties with > < labels >
+ * @param {string} sdfPart
+ * @param {*} labels
+ * @param {*} currentLabels
+ * @param {object} options
+ * @returns
+ */
 export function getMolecule(sdfPart, labels, currentLabels, options) {
   let parts = sdfPart.split(`${options.eol}>`);
   if (parts.length === 0 || parts[0].length <= 5) return;

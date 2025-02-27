@@ -1,13 +1,14 @@
 import { openAsBlob } from 'node:fs';
 import { join } from 'node:path';
 
-import { fileCollectionFromPath } from 'filelist-utils';
+import { FileCollection } from 'file-collection';
 import { test, expect } from 'vitest';
 
 import { iterator } from '../iterator';
 
 test('iterator', async () => {
-  const fileCollection = await fileCollectionFromPath(join(__dirname, '.'));
+  const fileCollection = new FileCollection({ ungzip: { gzipExtensions: [] } });
+  await fileCollection.appendPath(__dirname);
   const file = fileCollection.files.find((f) => f.name === 'test.sdf');
   const results = [];
 
@@ -133,13 +134,23 @@ test.skipIf(process.version.startsWith('v18'))(
   },
 );
 
-test('iterator on fileCollection stream', async () => {
-  const fileCollection = await fileCollectionFromPath(join(__dirname, '.'));
-  const file = fileCollection.filter((file) => file.size === 32233).files[0];
+test('iterator on fileCollection stream and decompression on the fly', async () => {
+  const fileCollection = new FileCollection({
+    ungzip: { gzipExtensions: [] },
+  });
+  await fileCollection.appendPath(__dirname);
+
+  const byteStream = fileCollection.files.find((file) => file.size === 32233);
   const results = [];
 
+  const decompressionStream = byteStream
+    .stream()
+    .pipeThrough(new DecompressionStream('gzip'));
+
   const textDecoder = new TextDecoderStream();
-  for await (const entry of iterator(file.stream().pipeThrough(textDecoder))) {
+  for await (const entry of iterator(
+    decompressionStream.pipeThrough(textDecoder),
+  )) {
     results.push(entry);
   }
   expect(results).toHaveLength(128);

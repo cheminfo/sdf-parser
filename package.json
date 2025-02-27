@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "dynamic-typing": "^1.0.1",
-    "ensure-string": "^1.2.0"
+    "ensure-string": "^1.2.0",
+    "file-collection": "^1.0.0"
   }
 }

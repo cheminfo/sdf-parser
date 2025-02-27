@@ -5,7 +5,7 @@ import { MolfileStream } from './MolfileStream.ts';
 /**
  *  Parse a SDF file
  * @param {ReadableStream} readStream - SDF file to parse
- * @param {object} [options={}]
+ * @param {object} [options={}] - iterator options
  * @param {Function} [options.filter] - Callback allowing to filter the molecules
  * @param {string} [options.eol='\n'] - End of line character
  * @param {boolean} [options.dynamicTyping] - Dynamically type the data
@@ -29,10 +29,10 @@ export async function* iterator(readStream, options = {}) {
 
 /**
  * Convert a SDF part to an object
- * @param {string} sdfPart
- * @param {object} options
- * @param {string} options.eol
- * @param {boolean} options.dynamicTyping
+ * @param {string} sdfPart - text containing the molfile
+ * @param {object} options - options
+ * @param {string} options.eol - end of line character
+ * @param {boolean} options.dynamicTyping - Dynamically type the data (create numbers and booleans)
  * @returns
  */
 function getMolecule(sdfPart, options) {
