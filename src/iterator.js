@@ -1,6 +1,6 @@
 import { parseString } from 'dynamic-typing';
 
-import { MolfileStream } from './MolfileStream.ts';
+import { MolfileStream } from './MolfileStream.js';
 
 /**
  *  Parse a SDF file
