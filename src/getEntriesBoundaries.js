@@ -1,3 +1,10 @@
+/**
+ *
+ * @param {*} string
+ * @param {*} substring
+ * @param {*} eol
+ * @returns
+ */
 export function getEntriesBoundaries(string, substring, eol) {
   const res = [];
   let previous = 0;
