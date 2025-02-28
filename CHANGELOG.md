@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.3](https://github.com/cheminfo/sdf-parser/compare/v7.0.2...v7.0.3) (2025-02-28)
+
+
+### Bug Fixes
+
+* iterator was adding a CR that yields to non parsable molfiles ([5dc3afc](https://github.com/cheminfo/sdf-parser/commit/5dc3afcde4f17034b46aa020b48492200dac0eaa))
+
 ## [7.0.2](https://github.com/cheminfo/sdf-parser/compare/v7.0.1...v7.0.2) (2025-02-27)
 
 
