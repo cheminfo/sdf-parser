@@ -3,7 +3,7 @@ import { parseString } from 'dynamic-typing';
 import { MolfileStream } from './MolfileStream.js';
 
 /**
- *  Parse a SDF file
+ *  Parse a SDF file as an iterator
  * @param {ReadableStream} readStream - SDF file to parse
  * @param {object} [options={}] - iterator options
  * @param {Function} [options.filter] - Callback allowing to filter the molecules
@@ -14,10 +14,10 @@ import { MolfileStream } from './MolfileStream.js';
 export async function* iterator(readStream, options = {}) {
   const { eol = '\n', dynamicTyping = true } = options;
 
-  const moleculeStream = readStream.pipeThrough(new MolfileStream());
-  for await (const molfile of moleculeStream) {
-    if (molfile.length < 20) continue;
-    const molecule = getMolecule(molfile, {
+  const moleculeStream = readStream.pipeThrough(new MolfileStream({ eol }));
+  for await (const entry of moleculeStream) {
+    if (entry.length < 20) continue;
+    const molecule = getMolecule(entry, {
       eol,
       dynamicTyping,
     });
