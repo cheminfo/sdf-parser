@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.4](https://github.com/cheminfo/sdf-parser/compare/v7.0.3...v7.0.4) (2025-03-05)
+
+
+### Bug Fixes
+
+* do not yield molfile that has less than 40 characters long ([dc0b2d7](https://github.com/cheminfo/sdf-parser/commit/dc0b2d718dc6adadeaf5e81ce8365c3dc2a397f7))
+
 ## [7.0.3](https://github.com/cheminfo/sdf-parser/compare/v7.0.2...v7.0.3) (2025-02-28)
 
 
