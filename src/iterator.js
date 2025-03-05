@@ -16,7 +16,6 @@ export async function* iterator(readStream, options = {}) {
 
   const moleculeStream = readStream.pipeThrough(new MolfileStream({ eol }));
   for await (const entry of moleculeStream) {
-    if (entry.length < 20) continue;
     const molecule = getMolecule(entry, {
       eol,
       dynamicTyping,

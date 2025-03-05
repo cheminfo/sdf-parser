@@ -13,6 +13,7 @@ import { getMolecule } from './util/getMolecule';
  * @param {object} [options.modifiers] - Object containing callbacks to apply on some specific fields
  * @param {boolean} [options.mixedEOL=false] - Set to true if you know there is a mixture between \r\n and \n
  * @param {string} [options.eol] - Specify the end of line character. Default will be the one found in the file
+ * @returns {object} - Object containing the molecules, the labels and the statistics
  */
 export function parse(sdf, options = {}) {
   options = { ...options };
@@ -53,7 +54,7 @@ export function parse(sdf, options = {}) {
 
   for (let i = 0; i < entriesBoundaries.length; i++) {
     let sdfPart = sdf.slice(...entriesBoundaries[i]);
-
+    if (sdfPart.length < 40) continue;
     let currentLabels = [];
     const molecule = getMolecule(sdfPart, labels, currentLabels, options);
     if (!molecule) continue;

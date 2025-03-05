@@ -17,14 +17,16 @@ export class MolfileStream extends TransformStream {
           }
           const eolLength = this.#buffer[endOfDelimiter - 1] === '\r' ? 2 : 1;
           // need to remove the last eol because we will split on eol+'>' in getMolecule
-          controller.enqueue(this.#buffer.slice(begin, index - eolLength));
+          if (index - eolLength - begin > 40) {
+            controller.enqueue(this.#buffer.slice(begin, index - eolLength));
+          }
           index = endOfDelimiter + eolLength;
           begin = index;
         }
         this.#buffer = this.#buffer.slice(begin);
       },
       flush: (controller) => {
-        if (this.#buffer) {
+        if (this.#buffer && this.#buffer.length > 40) {
           controller.enqueue(this.#buffer);
         }
       },
