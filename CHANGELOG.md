@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.5](https://github.com/cheminfo/sdf-parser/compare/v7.0.4...v7.0.5) (2026-02-16)
+
+
+### Bug Fixes
+
+* update dependencies ([cec40d2](https://github.com/cheminfo/sdf-parser/commit/cec40d22c8c363370831d5d9602acfd54475ff4b))
+
 ## [7.0.4](https://github.com/cheminfo/sdf-parser/compare/v7.0.3...v7.0.4) (2025-03-05)
 
 
