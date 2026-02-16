@@ -1,13 +1,12 @@
 import fs from 'node:fs';
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { parse } from '..';
 
-let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
-
 describe('SDF Parser options', () => {
-  let result = parse(sdf, {
+  const sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
+  const result = parse(sdf, {
     exclude: ['Number of H-Donors'],
     include: ['Number of H-Donors', 'CLogP', 'Code'],
     modifiers: {
@@ -36,6 +35,7 @@ describe('SDF Parser options', () => {
 
   it('Check molecules', () => {
     expect(result.molecules).toHaveLength(43);
+
     let molecule = result.molecules[0];
 
     expect(Object.keys(molecule)).toHaveLength(3);
@@ -48,12 +48,12 @@ describe('SDF Parser options', () => {
   it('should throw with non-string argument', () => {
     expect(() => {
       parse();
-    }).toThrow(TypeError);
+    }).toThrowError(TypeError);
     expect(() => {
       parse(42);
-    }).toThrow(TypeError);
+    }).toThrowError(TypeError);
     expect(() => {
       parse({});
-    }).toThrow(TypeError);
+    }).toThrowError(TypeError);
   });
 });

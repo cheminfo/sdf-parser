@@ -38,8 +38,7 @@ function getMolecule(sdfPart, options) {
   const { eol, dynamicTyping } = options;
   let parts = sdfPart.split(`${eol}>`);
   if (parts.length === 0 || parts[0].length <= 5) return;
-  let molecule = {};
-  molecule.molfile = parts[0] + eol;
+  let molecule = { molfile: parts[0] + eol };
   for (let j = 1; j < parts.length; j++) {
     let lines = parts[j].split(eol);
     let from = lines[0].indexOf('<');

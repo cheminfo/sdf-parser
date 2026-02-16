@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 import { FileCollection } from 'file-collection';
 import { Molecule } from 'openchemlib';
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 
 import { iterator } from '../iterator';
 
@@ -80,6 +80,7 @@ test.skipIf(process.version.startsWith('v18'))(
     )) {
       results.push(entry);
     }
+
     expect(results).toHaveLength(3);
     expect(results[1]).toMatchInlineSnapshot(`
       {
@@ -103,8 +104,10 @@ test.skipIf(process.version.startsWith('v18'))(
       ",
       }
     `);
+
     for (const entry of results) {
       const molecule = Molecule.fromMolfile(entry.molfile);
+
       expect(molecule.getAllAtoms()).toBe(6);
     }
   },
@@ -123,6 +126,7 @@ test.skipIf(process.version.startsWith('v18'))(
     for await (const entry of iterator(stream)) {
       results.push(entry);
     }
+
     expect(results).toHaveLength(7);
     expect(results[2]).toMatchInlineSnapshot(`
       {
@@ -163,8 +167,10 @@ test.skipIf(process.version.startsWith('v18'))(
         "nmrshiftdb2 ID": 2189,
       }
     `);
+
     for (const entry of results) {
       const molecule = Molecule.fromMolfile(entry.molfile);
+
       expect(molecule.getAllAtoms()).toBeGreaterThan(5);
     }
   },
@@ -235,8 +241,10 @@ test.skipIf(process.version.startsWith('v18'))(
       ",
       }
     `);
+
     for (const entry of results) {
       const molecule = Molecule.fromMolfile(entry.molfile);
+
       expect(molecule.getAllAtoms()).toBeGreaterThan(6);
     }
   },
@@ -261,6 +269,7 @@ test('iterator on fileCollection stream and decompression on the fly', async () 
   )) {
     results.push(entry);
   }
+
   expect(results).toHaveLength(128);
   expect(results[0]).toMatchInlineSnapshot(`
     {

@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { parse } from '..';
 
-let sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
-let sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf8');
+const sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
+const sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf8');
 
 describe('SDF Parser', () => {
-  let result = parse(sdf);
+  const result = parse(sdf);
 
   it('Check statistics', () => {
     expect(result.statistics[0].counter).toBe(128);
@@ -25,6 +25,7 @@ describe('SDF Parser', () => {
 
   it('Check molecules', () => {
     let molecule = result.molecules[0];
+
     expect(molecule.Code).toContain('0100380824');
     expect(molecule.CLogP).toBe(2.7);
     expect(molecule.molfile.split('\n')).toHaveLength(37);
@@ -33,18 +34,18 @@ describe('SDF Parser', () => {
   it('should throw with non-string argument', () => {
     expect(() => {
       parse();
-    }).toThrow(TypeError);
+    }).toThrowError(TypeError);
     expect(() => {
       parse(42);
-    }).toThrow(TypeError);
+    }).toThrowError(TypeError);
     expect(() => {
       parse({});
-    }).toThrow(TypeError);
+    }).toThrowError(TypeError);
   });
 });
 
 describe('SDF Parser no dynamicTyping', () => {
-  let result = parse(sdf, {
+  const result = parse(sdf, {
     dynamicTyping: false,
   });
 
@@ -63,6 +64,7 @@ describe('SDF Parser no dynamicTyping', () => {
 
   it('Check molecules', () => {
     let molecule = result.molecules[0];
+
     expect(typeof molecule.Code).toBe('string');
     expect(typeof molecule.CLogP).toBe('string');
     expect(molecule.CLogP).toBe('2.700000000000000e+000');
@@ -71,8 +73,9 @@ describe('SDF Parser no dynamicTyping', () => {
 });
 
 describe('SDF Parser one molecule', () => {
-  let result = parse(sdf1);
   it('Check statistics', () => {
+    const result = parse(sdf1);
+
     expect(result.molecules).toHaveLength(1);
   });
 });
