@@ -9,7 +9,7 @@ import { iterator } from '../iterator.ts';
 
 test('iterator', async () => {
   const fileCollection = new FileCollection({ ungzip: { gzipExtensions: [] } });
-  await fileCollection.appendPath(__dirname);
+  await fileCollection.appendPath(import.meta.dirname);
   const file = fileCollection.files.find((f) => f.name === 'test.sdf');
   assert(file);
   const results = [];
@@ -75,7 +75,7 @@ test('iterator', async () => {
 test(
   'iterator on stream diol.sdf',
   async () => {
-    const file = await openAsBlob(join(__dirname, 'diol.sdf'));
+    const file = await openAsBlob(join(import.meta.dirname, 'diol.sdf'));
 
     const textDecoder = new TextDecoderStream();
     const results = [];
@@ -121,7 +121,7 @@ test(
 test(
   'iterator on stream, no decompression',
   async () => {
-    const file = await openAsBlob(join(__dirname, 'test2.sdf'));
+    const file = await openAsBlob(join(import.meta.dirname, 'test2.sdf'));
 
     const textDecoder = new TextDecoderStream();
 
@@ -184,7 +184,7 @@ test(
 test(
   'iterator on stream with decompression',
   async () => {
-    const file = await openAsBlob(join(__dirname, 'test.sdf.gz'));
+    const file = await openAsBlob(join(import.meta.dirname, 'test.sdf.gz'));
 
     const decompressionStream = new DecompressionStream('gzip');
     const textDecoder = new TextDecoderStream();
@@ -259,7 +259,7 @@ test('iterator on fileCollection stream and decompression on the fly', async () 
   const fileCollection = new FileCollection({
     ungzip: { gzipExtensions: [] },
   });
-  await fileCollection.appendPath(__dirname);
+  await fileCollection.appendPath(import.meta.dirname);
 
   const byteStream = fileCollection.files.find((file) => file.size === 32233);
   assert(byteStream);

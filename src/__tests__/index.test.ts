@@ -1,11 +1,12 @@
-import fs from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
 import { parse } from '../index.ts';
 
-const sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
-const sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf8');
+const sdf = readFileSync(join(import.meta.dirname, 'test.sdf'), 'utf8');
+const sdf1 = readFileSync(join(import.meta.dirname, 'test1.sdf'), 'utf8');
 
 describe('SDF Parser', () => {
   const result = parse(sdf);

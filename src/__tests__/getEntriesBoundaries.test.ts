@@ -1,4 +1,5 @@
-import fs from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { expect, test } from 'vitest';
 
@@ -7,7 +8,7 @@ import { getEntriesBoundaries } from '../getEntriesBoundaries.ts';
 test.for(['test', 'test1', 'test2'])(
   'Split should match regex behavior - %s.sdf',
   (file) => {
-    const sdf = fs.readFileSync(`${__dirname}/${file}.sdf`, 'utf8');
+    const sdf = readFileSync(join(import.meta.dirname, `${file}.sdf`), 'utf8');
 
     const eol = getEol(sdf);
 
@@ -34,7 +35,7 @@ function getEol(sdf: string): string {
 
 test('should parse sdf files without EOL in the EOF', () => {
   const eol = '\n';
-  const sdf = fs.readFileSync(`${__dirname}/test4.sdf`, 'utf8');
+  const sdf = readFileSync(join(import.meta.dirname, 'test4.sdf'), 'utf8');
 
   expect(getEntriesBoundaries(sdf, `${eol}$$$$`, eol)).toMatchSnapshot();
 });
