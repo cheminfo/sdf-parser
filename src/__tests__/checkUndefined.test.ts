@@ -1,11 +1,12 @@
-import fs from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { parse } from '..';
+import { parse } from '../index.ts';
 
 describe('SDF Parser options and undefined', () => {
-  const sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
+  const sdf = readFileSync(join(import.meta.dirname, 'test.sdf'), 'utf8');
   const result = parse(sdf, {
     exclude: ['Number of H-Donors'],
     include: ['Number of H-Donors', 'CLogP', 'Code'],
