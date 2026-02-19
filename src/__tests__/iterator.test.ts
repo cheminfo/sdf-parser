@@ -3,18 +3,23 @@ import { join } from 'node:path';
 
 import { FileCollection } from 'file-collection';
 import { Molecule } from 'openchemlib';
-import { expect, test } from 'vitest';
+import { assert, expect, test } from 'vitest';
 
-import { iterator } from '../iterator';
+import { iterator } from '../iterator.ts';
 
 test('iterator', async () => {
   const fileCollection = new FileCollection({ ungzip: { gzipExtensions: [] } });
   await fileCollection.appendPath(__dirname);
   const file = fileCollection.files.find((f) => f.name === 'test.sdf');
+  assert(file);
   const results = [];
 
   const textDecoder = new TextDecoderStream();
-  for await (const entry of iterator(file.stream().pipeThrough(textDecoder))) {
+  // Node.js @types/node stream generics are not fully compatible with Web Streams API types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawStream: any = file.stream();
+  const decoded: ReadableStream<string> = rawStream.pipeThrough(textDecoder);
+  for await (const entry of iterator(decoded)) {
     results.push(entry);
   }
 
@@ -67,7 +72,7 @@ test('iterator', async () => {
   `);
 });
 
-test.skipIf(process.version.startsWith('v18'))(
+test(
   'iterator on stream diol.sdf',
   async () => {
     const file = await openAsBlob(join(__dirname, 'diol.sdf'));
@@ -113,7 +118,7 @@ test.skipIf(process.version.startsWith('v18'))(
   },
 );
 
-test.skipIf(process.version.startsWith('v18'))(
+test(
   'iterator on stream, no decompression',
   async () => {
     const file = await openAsBlob(join(__dirname, 'test2.sdf'));
@@ -176,7 +181,7 @@ test.skipIf(process.version.startsWith('v18'))(
   },
 );
 
-test.skipIf(process.version.startsWith('v18'))(
+test(
   'iterator on stream with decompression',
   async () => {
     const file = await openAsBlob(join(__dirname, 'test.sdf.gz'));
@@ -257,16 +262,17 @@ test('iterator on fileCollection stream and decompression on the fly', async () 
   await fileCollection.appendPath(__dirname);
 
   const byteStream = fileCollection.files.find((file) => file.size === 32233);
+  assert(byteStream);
   const results = [];
 
-  const decompressionStream = byteStream
-    .stream()
-    .pipeThrough(new DecompressionStream('gzip'));
-
+  // Node.js @types/node stream generics are not fully compatible with Web Streams API types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawStream: any = byteStream.stream();
   const textDecoder = new TextDecoderStream();
-  for await (const entry of iterator(
-    decompressionStream.pipeThrough(textDecoder),
-  )) {
+  const decodedStream: ReadableStream<string> = rawStream
+    .pipeThrough(new DecompressionStream('gzip'))
+    .pipeThrough(textDecoder);
+  for await (const entry of iterator(decodedStream)) {
     results.push(entry);
   }
 

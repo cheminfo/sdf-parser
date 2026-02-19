@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { parse } from '..';
+import { parse } from '../index.ts';
 
 describe('SDF Parser options and undefined', () => {
   const sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');

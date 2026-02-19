@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { parse } from '..';
+import { parse } from '../index.ts';
 
 const sdf = fs.readFileSync(`${__dirname}/test.sdf`, 'utf8');
 const sdf1 = fs.readFileSync(`${__dirname}/test1.sdf`, 'utf8');
@@ -24,7 +24,7 @@ describe('SDF Parser', () => {
   });
 
   it('Check molecules', () => {
-    let molecule = result.molecules[0];
+    const molecule = result.molecules[0];
 
     expect(molecule.Code).toContain('0100380824');
     expect(molecule.CLogP).toBe(2.7);
@@ -33,7 +33,7 @@ describe('SDF Parser', () => {
 
   it('should throw with non-string argument', () => {
     expect(() => {
-      parse();
+      parse(undefined);
     }).toThrowError(TypeError);
     expect(() => {
       parse(42);
@@ -63,7 +63,7 @@ describe('SDF Parser no dynamicTyping', () => {
   });
 
   it('Check molecules', () => {
-    let molecule = result.molecules[0];
+    const molecule = result.molecules[0];
 
     expect(typeof molecule.Code).toBe('string');
     expect(typeof molecule.CLogP).toBe('string');

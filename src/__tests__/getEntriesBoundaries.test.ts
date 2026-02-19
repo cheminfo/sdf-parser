@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 import { expect, test } from 'vitest';
 
-import { getEntriesBoundaries } from '../getEntriesBoundaries';
+import { getEntriesBoundaries } from '../getEntriesBoundaries.ts';
 
 test.for(['test', 'test1', 'test2'])(
   'Split should match regex behavior - %s.sdf',
@@ -11,7 +11,7 @@ test.for(['test', 'test1', 'test2'])(
 
     const eol = getEol(sdf);
 
-    let sdfParts = sdf.split(new RegExp(String.raw`${eol}\$\$\$\$.*${eol}`));
+    const sdfParts = sdf.split(new RegExp(String.raw`${eol}\$\$\$\$.*${eol}`));
 
     expect(sdfParts).toStrictEqual(
       getEntriesBoundaries(sdf, `${eol}$$$$`, eol).map((v) => sdf.slice(...v)),
@@ -19,7 +19,7 @@ test.for(['test', 'test1', 'test2'])(
   },
 );
 
-function getEol(sdf) {
+function getEol(sdf: string): string {
   // A set would not work for \r\n matching.
   // eslint-disable-next-line unicorn/prefer-set-has
   const header = sdf.slice(0, 1000);

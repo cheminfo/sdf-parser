@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { parse } from '..';
+import { parse } from '../index.ts';
 
 describe('SDF Parser of non well formatted file', () => {
   it('Check molecules', () => {
@@ -10,7 +10,7 @@ describe('SDF Parser of non well formatted file', () => {
     sdf = sdf.replaceAll('\r', '');
     const result = parse(sdf, { mixedEOL: true });
 
-    const molecules = result.molecules;
+    const { molecules } = result;
 
     expect(molecules).toHaveLength(7);
   });
