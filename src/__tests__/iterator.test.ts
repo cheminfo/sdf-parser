@@ -72,22 +72,18 @@ test('iterator', async () => {
   `);
 });
 
-test(
-  'iterator on stream diol.sdf',
-  async () => {
-    const file = await openAsBlob(join(import.meta.dirname, 'diol.sdf'));
+test('iterator on stream diol.sdf', async () => {
+  const file = await openAsBlob(join(import.meta.dirname, 'diol.sdf'));
 
-    const textDecoder = new TextDecoderStream();
-    const results = [];
+  const textDecoder = new TextDecoderStream();
+  const results = [];
 
-    for await (const entry of iterator(
-      file.stream().pipeThrough(textDecoder),
-    )) {
-      results.push(entry);
-    }
+  for await (const entry of iterator(file.stream().pipeThrough(textDecoder))) {
+    results.push(entry);
+  }
 
-    expect(results).toHaveLength(3);
-    expect(results[1]).toMatchInlineSnapshot(`
+  expect(results).toHaveLength(3);
+  expect(results[1]).toMatchInlineSnapshot(`
       {
         "ID": 1234,
         "molfile": "Untitled Document-2
@@ -110,30 +106,27 @@ test(
       }
     `);
 
-    for (const entry of results) {
-      const molecule = Molecule.fromMolfile(entry.molfile);
+  for (const entry of results) {
+    const molecule = Molecule.fromMolfile(entry.molfile);
 
-      expect(molecule.getAllAtoms()).toBe(6);
-    }
-  },
-);
+    expect(molecule.getAllAtoms()).toBe(6);
+  }
+});
 
-test(
-  'iterator on stream, no decompression',
-  async () => {
-    const file = await openAsBlob(join(import.meta.dirname, 'test2.sdf'));
+test('iterator on stream, no decompression', async () => {
+  const file = await openAsBlob(join(import.meta.dirname, 'test2.sdf'));
 
-    const textDecoder = new TextDecoderStream();
+  const textDecoder = new TextDecoderStream();
 
-    const stream = file.stream().pipeThrough(textDecoder);
-    const results = [];
+  const stream = file.stream().pipeThrough(textDecoder);
+  const results = [];
 
-    for await (const entry of iterator(stream)) {
-      results.push(entry);
-    }
+  for await (const entry of iterator(stream)) {
+    results.push(entry);
+  }
 
-    expect(results).toHaveLength(7);
-    expect(results[2]).toMatchInlineSnapshot(`
+  expect(results).toHaveLength(7);
+  expect(results[2]).toMatchInlineSnapshot(`
       {
         "Field Strength [MHz]": "0:50.328 ",
         "Solvent": "0:Acetone-D6 ((CD3)2CO) ",
@@ -173,34 +166,31 @@ test(
       }
     `);
 
-    for (const entry of results) {
-      const molecule = Molecule.fromMolfile(entry.molfile);
+  for (const entry of results) {
+    const molecule = Molecule.fromMolfile(entry.molfile);
 
-      expect(molecule.getAllAtoms()).toBeGreaterThan(5);
-    }
-  },
-);
+    expect(molecule.getAllAtoms()).toBeGreaterThan(5);
+  }
+});
 
-test(
-  'iterator on stream with decompression',
-  async () => {
-    const file = await openAsBlob(join(import.meta.dirname, 'test.sdf.gz'));
+test('iterator on stream with decompression', async () => {
+  const file = await openAsBlob(join(import.meta.dirname, 'test.sdf.gz'));
 
-    const decompressionStream = new DecompressionStream('gzip');
-    const textDecoder = new TextDecoderStream();
+  const decompressionStream = new DecompressionStream('gzip');
+  const textDecoder = new TextDecoderStream();
 
-    const stream = file
-      .stream()
-      .pipeThrough(decompressionStream)
-      .pipeThrough(textDecoder);
-    const results = [];
+  const stream = file
+    .stream()
+    .pipeThrough(decompressionStream)
+    .pipeThrough(textDecoder);
+  const results = [];
 
-    for await (const entry of iterator(stream)) {
-      results.push(entry);
-    }
+  for await (const entry of iterator(stream)) {
+    results.push(entry);
+  }
 
-    expect(results).toHaveLength(128);
-    expect(results[0]).toMatchInlineSnapshot(`
+  expect(results).toHaveLength(128);
+  expect(results[0]).toMatchInlineSnapshot(`
       {
         "CLogP": 2.7,
         "Code": 100380824,
@@ -247,13 +237,12 @@ test(
       }
     `);
 
-    for (const entry of results) {
-      const molecule = Molecule.fromMolfile(entry.molfile);
+  for (const entry of results) {
+    const molecule = Molecule.fromMolfile(entry.molfile);
 
-      expect(molecule.getAllAtoms()).toBeGreaterThan(6);
-    }
-  },
-);
+    expect(molecule.getAllAtoms()).toBeGreaterThan(6);
+  }
+});
 
 test('iterator on fileCollection stream and decompression on the fly', async () => {
   const fileCollection = new FileCollection({

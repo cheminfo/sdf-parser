@@ -15,7 +15,7 @@
     "build": "npm run tsc-build && cheminfo-build --entry lib/index.js --root SDFParser",
     "check-types": "tsc --noEmit",
     "clean": "rimraf lib",
-    "eslint": "eslint src --cache",
+    "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
     "prepack": "npm run tsc",
     "prettier": "prettier --check src",
@@ -59,7 +59,7 @@
     "vitest": "^4.0.18"
   },
   "dependencies": {
-    "dynamic-typing": "^1.0.1",
+    "dynamic-typing": "^2.0.0",
     "ensure-string": "^2.0.0"
   }
 }
