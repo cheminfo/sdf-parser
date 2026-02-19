@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.0](https://github.com/cheminfo/sdf-parser/compare/v7.0.5...v8.0.0) (2026-02-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to TS and type:module ([#25](https://github.com/cheminfo/sdf-parser/issues/25))
+
+### Features
+
+* migrate to TS and type:module ([#25](https://github.com/cheminfo/sdf-parser/issues/25)) ([7b30059](https://github.com/cheminfo/sdf-parser/commit/7b30059d8e4756b1c83618c786cc8365e8bd481f))
+
 ## [7.0.5](https://github.com/cheminfo/sdf-parser/compare/v7.0.4...v7.0.5) (2026-02-16)
 
 
