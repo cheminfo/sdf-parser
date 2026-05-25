@@ -37,12 +37,13 @@ export interface ParseOptions {
   dynamicTyping?: boolean;
   /**
    * End-of-line character. Auto-detected from the file content when not set.
+   * Detected as `'\r\n'` for Windows-style files; falls back to `'\n'`.
    * @default '\n'
    */
   eol?: string;
   /**
-   * When `true`, normalises all `\r\n` and `\r` sequences to `\n` before
-   * parsing. Useful for SDF files with mixed or Windows-style line endings.
+   * When `true`, normalises all `\r\n` sequences to `\n` before parsing.
+   * Useful for SDF files with Windows-style line endings.
    * @default false
    */
   mixedEOL?: boolean;
@@ -126,26 +127,14 @@ export function parse(sdf: unknown, options: ParseOptions = {}): ParseResult {
 
   if (options.eol === undefined) {
     options.eol = '\n';
-    if (options.mixedEOL) {
-      // Normalize all line endings to \n
-      // We work on a local variable so no issue here
-    } else {
-      // Note: new Set(string) creates a Set of individual characters.
-      // '\r\n' is two characters so header.has('\r\n') would always be false.
-      // This preserves the original detection behaviour.
-      const header = new Set(sdfString.slice(0, 1000));
-      if (header.has('\r\n' as unknown as string)) {
-        options.eol = '\r\n';
-      } else if (header.has('\r')) {
-        options.eol = '\r';
-      }
+    if (!options.mixedEOL && sdfString.slice(0, 1000).includes('\r\n')) {
+      options.eol = '\r\n';
     }
   }
 
   let workingSdf = sdfString;
   if (options.mixedEOL) {
     workingSdf = workingSdf.replaceAll('\r\n', '\n');
-    workingSdf = workingSdf.replaceAll('\r', '\n');
   }
 
   const eol = options.eol;

@@ -24,6 +24,13 @@ export interface IteratorOptions {
    */
   eol?: string;
   /**
+   * Controls EOL normalisation before splitting on `$$$$`.
+   * - `undefined` (default): inspect the first 10 000 characters; normalise only if `\r` is detected.
+   * - `true`: always normalise CR and CRLF to LF.
+   * - `false`: never normalise; use when the file is known to be pure LF.
+   */
+  mixedEOL?: boolean;
+  /**
    * When `true`, numeric string values are automatically converted to numbers.
    * @default true
    */
@@ -56,10 +63,13 @@ export async function* iterator(
   readStream: ReadableStream<string>,
   options: IteratorOptions = {},
 ): AsyncGenerator<IteratorMolecule> {
-  const { eol = '\n', dynamicTyping = true } = options;
-  const moleculeStream = readStream.pipeThrough(new MolfileStream({ eol }));
+  const { eol = '\n', mixedEOL, dynamicTyping = true } = options;
+  const moleculeStream = readStream.pipeThrough(
+    new MolfileStream({ mixedEOL }),
+  );
+  const effectiveEol = mixedEOL !== false ? '\n' : eol;
   for await (const entry of moleculeStream) {
-    const molecule = parseMolecule(entry, { eol, dynamicTyping });
+    const molecule = parseMolecule(entry, { eol: effectiveEol, dynamicTyping });
     if (!options.filter || options.filter(molecule)) {
       yield molecule;
     }

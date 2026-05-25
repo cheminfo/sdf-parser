@@ -22,7 +22,7 @@ test.for(['test', 'test1', 'test2'])(
 
 function getEol(sdf: string): string {
   // A set would not work for \r\n matching.
-  // eslint-disable-next-line unicorn/prefer-set-has
+
   const header = sdf.slice(0, 1000);
   if (header.includes('\r\n')) {
     return '\r\n';

@@ -35,13 +35,13 @@ describe('SDF Parser', () => {
   it('should throw with non-string argument', () => {
     expect(() => {
       parse(undefined);
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
     expect(() => {
       parse(42);
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
     expect(() => {
       parse({});
-    }).toThrowError(TypeError);
+    }).toThrow(TypeError);
   });
 });
 
