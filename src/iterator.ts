@@ -63,14 +63,14 @@ export async function* iterator(
   readStream: ReadableStream<string>,
   options: IteratorOptions = {},
 ): AsyncGenerator<IteratorMolecule> {
-  const { eol = '\n', mixedEOL, dynamicTyping = true } = options;
+  const { eol = '\n', mixedEOL, dynamicTyping = true, filter } = options;
   const moleculeStream = readStream.pipeThrough(
     new MolfileStream({ mixedEOL }),
   );
   const effectiveEol = mixedEOL !== false ? '\n' : eol;
   for await (const entry of moleculeStream) {
     const molecule = parseMolecule(entry, { eol: effectiveEol, dynamicTyping });
-    if (!options.filter || options.filter(molecule)) {
+    if (!filter || filter(molecule)) {
       yield molecule;
     }
   }
