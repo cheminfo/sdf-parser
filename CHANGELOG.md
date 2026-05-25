@@ -1,5 +1,16 @@
 # Changelog
 
+## [9.0.0](https://github.com/cheminfo/sdf-parser/compare/v8.0.0...v9.0.0) (2026-05-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* MolfileStreamOptions.eol is removed — MolfileStream always splits on \n and trims a preceding \r automatically. Lone \r (Mac OS 9, pre-2001) is no longer recognised as a line ending in either MolfileStream or parse(). The mixedEOL option on MolfileStream now accepts boolean | undefined (undefined = auto-detect, was previously not present).
+
+### Features
+
+* add CRLF auto-detection and fix multi-record CRLF splitting ([7fb6c42](https://github.com/cheminfo/sdf-parser/commit/7fb6c42899b34b5bdc5ce046aab9a0ad83633656))
+
 ## [8.0.0](https://github.com/cheminfo/sdf-parser/compare/v7.0.5...v8.0.0) (2026-02-19)
 
 
